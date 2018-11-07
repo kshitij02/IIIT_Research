@@ -8,12 +8,29 @@ import os.path
 
 from app import app
 
-@app.route('/')
-@app.route('/main')
+# @app.route('/main')
+# def index():
+# 	user = {'nickname': 'Mitesh'}
+# 	return render_template('stud.html',title='Student',user=user)
+
+
+@app.route('/index')
 def index():
-	user = {'nickname': 'Mitesh'}
-	return render_template('stud.html',title='Student',user=user)
-	
+	return render_template('index.html')
+
+@app.route('/post')
+def post():
+	return render_template('post.html')
+
+@app.route('/timeline')
+def timeline():
+	return render_template('timeline.html')
+
+@app.route('/lab')
+def lab():
+	return render_template('lab.html')
+
+@app.route('/')	
 @app.route('/login')
 def login():
 	return render_template('login.html')

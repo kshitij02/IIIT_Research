@@ -1,0 +1,23 @@
+{% extends "index.html" %}
+{% block post_lab_start %}
+      <div class="col-lg-3 col-md-3 col-sm-4">
+        <h1 style="text-align: center; position: fixed;">
+          ABOUT
+        </h1>
+      </div>
+      <div class="col-lg-6 col-md-6 col-sm-8">
+		    <div class="middle_content">
+            <div class="row">
+              <h3> 
+                <form >
+                  <input style="width: 100%; display: inline; margin: 0%;" type="text" name="write_post" placeholder="Write A Post.." >
+                </form>
+              </h3>
+            </div>
+            <div class="row">
+              
+            </div>
+        </div>
+        {% block timeline_start %}{% endblock %}
+      </div>
+{% endblock %}

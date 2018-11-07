@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<style>
+  .user_image{
+    position: absolute;
+    height: 100%;
+    width: 10%;
+    text-align: center; 
+  }
+  .btn {
+    display: none;
+  }
+  input[type=text]{
+    width: 130px;
+    -webkit-transition: width 0.4s ease-in-out;
+    transition: width 0.4s ease-in-out;
+  }
+
+  input[type=text]:focus{
+    width: 100%;
+  }
+</style>
+
+
+<title>Cyber Tech</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="{{ url_for('static',filename = 'style.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static',filename = 'bootstrap.min.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static',filename = 'font-awesome.min.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static',filename = 'theme.css') }}" rel="stylesheet" type="text/css">
+</head>
+<body>
+<div id="preloader">
+  <div id="status">&nbsp;</div>
+</div>
+<a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
+<header id="header">
+   <nav class="navbar navbar-default navbar-static-top" role="navigation">
+     <div class="container">
+       <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a style="text-align: center;" class="navbar-brand" href="/timeline">IIIT Research<br><br><img style="height: 100%;" src="http://skilloutlook.com/wp-content/uploads/2018/03/1-5.jpg" alt=""></a>
+      </div>
+      <div id="navbar">
+        <a href="/timeline">
+          <img src="https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1" class="user_image">
+           <a style="text-align: center;" class="navbar-brand" href="/timeline">IIIT Research<br><br><img style="height: 100%;" src="http://skilloutlook.com/wp-content/uploads/2018/03/1-5.jpg" alt=""></a>
+        </a>
+      </div>
+      <br>
+      <div class="search">
+       <form action="#">
+         <input class="sch" type="text" placeholder="Search.." name="search">
+         <br><br>
+         <button class="btn" type="button" >By Student</button> 
+         <button class="btn" type="button" >By Prof</button> 
+         <button class="btn" type="button" >By Labs</button>
+         <button class="btn" type="button" >Logout</button>
+        </form>
+     </div>
+    </div>
+  </nav>
+</header>
+<section id="content">
+  <br><br><br>
+  <div class="container">
+    <div class="row">
+      {% block post_lab_start %}{% endblock %}
+      <div class="col-lg-3 col-md-3 col-sm-12">
+        <div class="right_sidebar">
+          <div class="single_widget">
+            <h2>Popular Post</h2>
+            <ul class="ppost_nav wow fadeInDown">
+              <li>
+                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
+                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
+                </div>
+              </li>
+              <li>
+                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
+                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
+                </div>
+              </li>
+              <li>
+                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
+                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
+                </div>
+              </li>
+              <li>
+                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
+                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
+                </div>
+              </li>
+              <li>
+                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
+                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
+                </div>
+              </li>
+              <li>
+                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
+                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
+                </div>
+              </li>
+              <li>
+                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
+                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
+                </div>
+              </li>
+              <li>
+                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
+                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
+                </div>
+              </li>
+              <li>
+                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
+                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
+                </div>
+              </li>
+              <li>
+                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
+                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<script src="{{ url_for('static',filename = 'jquery.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'wow.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'custom.js') }}"></script>
+<!-- <script type="text/javascript">
+    $(document).ready(function(){
+      $(".sch").click(function(){
+        $(".btn").show(500);
+      });
+    });
+</script> -->
+</body>
+</html>
