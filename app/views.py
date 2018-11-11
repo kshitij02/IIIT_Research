@@ -37,7 +37,6 @@ def post():
 
 @app.route('/timeline')
 def timeline():
-	
 	return render_template('timeline.html')
 
 @app.route('/lab')
@@ -45,6 +44,20 @@ def lab():
 	if session['user_logged_in']==True:
 		return render_template('lab.html')
 	return	redirect(url_for('login'))
+
+@app.route('/about')
+def about():
+	if session['user_logged_in']==True:
+		return render_template('trending.html')
+	return	redirect(url_for('login'))
+
+
+@app.route('/trending')
+def trending():
+	if session['user_logged_in']==True:
+		return render_template('trending.html')
+	return	redirect(url_for('login'))
+
 
 @app.route('/professor')
 def professor():
@@ -129,6 +142,10 @@ def logout():
 	session['user_logged_in']=False
 	session.pop('userID',None)
 	return render_template('login.html')
+# @app.route('/trending')
+# def trending():
+# 	return render_template('trending.html')
+
 
 # @app.route('/loginNext',methods=['GET','POST'])
 # def loginNext():

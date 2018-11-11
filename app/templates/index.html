@@ -2,7 +2,7 @@
 {% extends 'header.html' %}
 {% block body %}   
 {% for i in range(4) %}
-<div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+<div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;border-radius:50px;margin:15px ">
   <h3 style="text-align:center;">Research Area:{{i}}</h3>
   <p>
     Lab:{{i}}<br>
@@ -14,7 +14,7 @@
         <button id="{{i}}" class="heart">
           <span class="glyphicon glyphicon-heart"></span></button>
       </p>
-</div><br><br>
+</div><br>
 <script type="text/javascript">
     $(document).ready(function($){
     $('#{{i}}').on("click", function(){
@@ -29,7 +29,7 @@
 });
 </script>
 {% endfor %}
- --><script src="{{ url_for('static',filename = 'jquery.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'jquery.min.js') }}"></script>
 <script src="{{ url_for('static',filename = 'wow.min.js') }}"></script>
 <script src="{{ url_for('static',filename = 'bootstrap.min.js') }}"></script>
 <script src="{{ url_for('static',filename = 'custom.js') }}"></script>
