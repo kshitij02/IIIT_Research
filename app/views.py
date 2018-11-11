@@ -28,7 +28,7 @@ app.secret_key = "Ramukaka"
 def index():
 	if session['user_logged_in']==True:
 		return render_template('index.html')
-	return render_template('login.html')
+	return	redirect(url_for('login'))
 @app.route('/post')
 def post():
 	return render_template('post.html')
@@ -44,6 +44,8 @@ def lab():
 @app.route('/')	
 @app.route('/login')
 def login():
+	if session['user_logged_in']==True:
+		return redirect(url_for('index'))
 	return render_template('login.html')
 
 @app.route('/registration')
@@ -61,7 +63,7 @@ def insert_login(id,name,password,type):
 		c.execute("INSERT into login values(?,?,?,?) ", t )
 		conn.commit()
 		conn.close()
-		return "User inserted"
+		return True
 	except sqlite3.IntegrityError:
 		conn.close()
 		return "User id already exists"
@@ -93,7 +95,10 @@ def registrationNext():
 		name=request.form["name"]
 		password=request.form["password"]
 		type=request.form["type"]
-		return insert_login(id,name,password,type)
+		if insert_login(id,name,password,type)==True:
+			return redirect(url_for('login'))
+		# flash("User id already Exits!!")
+		return redirect(url_for('registration'))
 
 @app.route('/loginNext',methods=['POST'])
 def loginNext():
@@ -103,9 +108,10 @@ def loginNext():
 		if check_user(id,password)==True:
 			session['user_logged_in']=True
 			session['userID']=id
-			return render_template('index.html')
+			return redirect(url_for('index'))
 		else :
-			return "Invaild credentials!"
+			# flash( "Invaild credentials!")
+			return redirect(url_for('login'))			
 
 @app.route('/logout')
 def logout():
