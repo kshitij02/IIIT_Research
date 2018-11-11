@@ -112,12 +112,12 @@ h3 {
   <li><a href="/timeline">
           <img class="avatar" src="https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1" class="user_image">
         </a></li>
-  <li><a href="#home">Home</a></li>
-  <li><a href="#news">Timeline</a></li>
-  <li><a href="#contact">About</a></li>
-  <li><a href="#contact">Trending</a></li>
-  <li><a href="#contact">Labs</a></li>
-  <li><a href="#contact">Professor</a></li>
+  <li><a href="/index">Home</a></li>
+  <li><a href="/timeline">Timeline</a></li>
+  <li><a href="/about">About</a></li>
+  <li><a href="/Trending">Trending</a></li>
+  <li><a href="/lab">Labs</a></li>
+  <li><a href="/professor">Professor</a></li>
     
   <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
   <li style="float:right"><input type="text" placeholder="Search.."></li>
@@ -127,6 +127,10 @@ h3 {
 <br><br>
 
 {% block body %}{% endblock %}
+<script src="{{ url_for('static',filename = 'jquery.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'wow.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static',filename = 'custom.js') }}"></script>
 
 <br><br>
 <ul class="ulul" style="text-align: center;">

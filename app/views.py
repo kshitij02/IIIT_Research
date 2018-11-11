@@ -31,15 +31,26 @@ def index():
 	return	redirect(url_for('login'))
 @app.route('/post')
 def post():
-	return render_template('post.html')
+	if session['user_logged_in']==True:
+		return render_template('post.html')
+	return	redirect(url_for('login'))
 
 @app.route('/timeline')
 def timeline():
+	
 	return render_template('timeline.html')
 
 @app.route('/lab')
 def lab():
-	return render_template('lab.html')
+	if session['user_logged_in']==True:
+		return render_template('lab.html')
+	return	redirect(url_for('login'))
+
+@app.route('/professor')
+def professor():
+	if session['user_logged_in']==True:
+		return render_template('professor.html')
+	return	redirect(url_for('login'))
 
 @app.route('/')	
 @app.route('/login')

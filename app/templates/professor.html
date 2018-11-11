@@ -1,12 +1,15 @@
 {% extends 'header.html' %}
+
 {% block body %}  
+
 <div class="container">
 <h1 style="text-align: center;">
-    List Of Labs
+    Lists Of Professors
 </h1>
 {% for i in range(10)  %}
+
 <div style="color: #777;background-color:white;text-align:center;padding:25px 40px;text-align: justify;border-radius:50px">
-<div ><a href=/professor>Lab {{i}} </a></div>
+<div><a href=/prof_page>Prof. {{i}} </a></div>
 </div>
 <br>
 {% endfor %}
