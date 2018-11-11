@@ -1,3 +1,124 @@
 {% extends 'header.html' %}
-{% block body %}   
+{% block body %}
+<!-- Page Container -->
+<div class=" w3-content" style="max-width:1800px;">    
+  <!-- The Grid -->
+  <div class="w3-row w3" style="margin-top:15px">
+    <!-- Left Column -->
+    <div class="w3-col m3 ">
+      <!-- Profile -->
+      <div class="w3-card w3-round w3-white" style="border-radius: 20px;">
+        <div class="w3-container w3-white" style="border-radius: 20px;">
+         <h4 class="w3-center">
+         <b><span style="color:#E040FB;">Jane Doe</span></b></h4>
+         <hr>
+         <p><i class="fa fa-pencil fa-fw w3-margin-right"></i> Designer, UI</p>
+         <p><i class="fa fa-home fa-fw w3-margin-right"></i> London, UK</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right"></i> April 1, 1988</p>
+         <div class="w3-row w3-opacity">
+              <button class="w3-button w3-block  w3-section ulul" title="Accept" style="border-radius: 20px; color:black;">Update Profile</button>
+          </div>
+        </div>
+      </div>
+      <br>
+
+      <div class="w3-card w3-round w3-white w3-center" style="border-radius: 20px;">
+        <div class="w3-container">
+          <p>Follow:</p>
+          <span>Jane Doe</span>
+          <div class="w3-row w3-opacity">
+              <button class="w3-button w3-block  w3-section ulul" title="Accept" style="border-radius: 20px;"><i class="fa fa-check"></i></button>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="w3-card w3-round w3-white w3-hide-small" style="border-radius: 20px;">
+        <div class="w3-container">
+          <br>
+          <p style="color:#E040FB;"><b>Interests</b></p>
+          <hr>
+          <p>
+            {% for i in range(4) %}
+            <span >Interest {{i}}</span><br>
+            {% endfor %}
+          </p>
+        </div>
+      </div>
+      <br>
+      <!-- Accordion -->
+      
+      <!-- Interests --> 
+    <!-- End Left Column -->
+    </div>
+    
+    <!-- Middle Column -->
+    <div class="w3-col m7">
+    
+      {% for i in range(4) %}
+      <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;border-radius:50px; margin-right:15px; margin-left:15px;">
+  <h3 style="text-align:center;">Research Area:{{i}}</h3>
+  <p>
+    Lab:{{i}}<br>
+    Professor:{{i}}<br>
+    Student:{{i}}<br>
+  </p>
+  <p><b>About</b><br>Parallax scrolling is a web site trend where the background content is moved at a different speed than the foreground content while scrolling. Nascetur per nec posuere turpis, lectus nec libero turpis nunc at, sed posuere mollis ullamcorper libero ante lectus, blandit pellentesque a, magna turpis est sapien duis blandit dignissim. Viverra interdum mi magna mi, morbi sociis. Condimentum dui ipsum consequat morbi, curabitur aliquam pede, nullam vitae eu placerat eget et vehicula. Varius quisque non molestie dolor, nunc nisl dapibus vestibulum at, sodales tincidunt mauris ullamcorper, dapibus pulvinar, in in neque risus odio. Accumsan fringilla vulputate at quibusdam sociis eleifend, aenean maecenas vulputate, non id vehicula lorem mattis, ratione interdum sociis ornare. Suscipit proin magna cras vel, non sit platea sit, maecenas ante augue etiam maecenas, porta porttitor placerat leo.</p>
+    <p>
+        <button id="{{i}}" class="heart">Vote 
+          <span class="glyphicon glyphicon-heart"></span></button>
+      </p>
+</div><br>
+<script type="text/javascript">
+    $(document).ready(function($){
+    $('#{{i}}').on("click", function(){
+      const element = document.getElementById('{{i}}')
+      const color = element.style.color
+      // console.log(color)
+      if(color=="red")
+        $(this).css("color", "black");
+      else
+        $(this).css("color", "red");
+    });
+});
+</script>
+{% endfor %}
+    <!-- End Middle Column -->
+    </div>
+    
+    <!-- Right Column -->
+    <div class="w3-col m2">
+      <div class="w3-card w3-round" style="border-radius: 20px;">
+        <div class="w3-white" style="border-radius: 20px;">
+          <button onclick="myFunction('Demo1')" class="w3-button w3-block ulul w3-left-align" style="border-radius: 20px;"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Followers</button>
+          <div id="Demo1" class="w3-hide w3-container">
+             {% for i in range(4) %}
+            <a href="/index">Follower{{i}}</a	><br>
+            {% endfor %}
+          </div>
+        </div>      
+      </div>
+      <br>
+      
+    <!-- End Right Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+<!-- End Page Container -->
+</div>
+<script>
+// Accordion
+function myFunction(id) {
+    var x = document.getElementById(id);
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+        x.previousElementSibling.className += " w3-theme-d1";
+    } else { 
+        x.className = x.className.replace("w3-show", "");
+        x.previousElementSibling.className = 
+        x.previousElementSibling.className.replace(" w3-theme-d1", "");
+    }
+}
+</script>
 {% endblock %}

@@ -37,8 +37,10 @@ def post():
 
 @app.route('/timeline')
 def timeline():
-	return render_template('timeline.html')
-
+	if session['user_logged_in']==True:
+		return render_template('timeline.html')
+	return	redirect(url_for('login'))
+	
 @app.route('/lab')
 def lab():
 	if session['user_logged_in']==True:
@@ -48,7 +50,7 @@ def lab():
 @app.route('/about')
 def about():
 	if session['user_logged_in']==True:
-		return render_template('trending.html')
+		return render_template('about.html')
 	return	redirect(url_for('login'))
 
 
