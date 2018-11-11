@@ -1,23 +1,34 @@
 from flask import render_template
-from flask import url_for,redirect
+from flask import url_for,redirect,session
 from flask import request
 import sqlite3
 import os.path
+# from flask import Flask, session
+# from flask.ext.session import Session
+# from flask.ext.session import Session
+
 
 # Imported a function to render templates
 
 from app import app
+
+app.secret_key = "Ramukaka"
+ 
+# app = Flask(__name__)
 
 # @app.route('/main')
 # def index():
 # 	user = {'nickname': 'Mitesh'}
 # 	return render_template('stud.html',title='Student',user=user)
 
-
+# session[userlogedin]=False
+# session = Session()
+# session[user_logged_in]=False
 @app.route('/index')
 def index():
-	return render_template('index.html')
-
+	if session['user_logged_in']==True:
+		return render_template('index.html')
+	return render_template('login.html')
 @app.route('/post')
 def post():
 	return render_template('post.html')
@@ -34,6 +45,7 @@ def lab():
 @app.route('/login')
 def login():
 	return render_template('login.html')
+
 @app.route('/registration')
 def registration():
 	return render_template('registration.html')
@@ -69,9 +81,9 @@ def check_user(id,password):
 	li=c.execute("SELECT * FROM login WHERE id = ? and password=?" , t )
 	li=c.fetchall()
 	if len(li) == 0 :
-		return "No such User exists"
+		return "Invaild credentials!"
 	else :
-		return str(li)
+		return True
 	conn.close()
 
 @app.route('/registrationNext',methods=['POST'])
@@ -88,7 +100,18 @@ def loginNext():
 	if request.method=='POST':
 		id=request.form["id"]
 		password=request.form["password"]
-		return check_user(id,password)
+		if check_user(id,password)==True:
+			session['user_logged_in']=True
+			session['userID']=id
+			return render_template('index.html')
+		else :
+			return "Invaild credentials!"
+
+@app.route('/logout')
+def logout():
+	session['user_logged_in']=False
+	session.pop('userID',None)
+	return render_template('login.html')
 
 # @app.route('/loginNext',methods=['GET','POST'])
 # def loginNext():

@@ -19,11 +19,11 @@ jQuery(document).ready(function() {
     });
     $(".search_icon").click(function() {
         $('.search_bar').fadeOut();
-        $("i", this).toggleClass("fa-search fa-close");
+        // $("i", this).toggleClass("fa-search fa-close");
     });
-    $(document).on('click', '.fa-close', function() {
-        $('.search_bar').fadeIn();
-    });
+    // $(document).on('click', '.fa-close', function() {
+    //     $('.search_bar').fadeIn();
+    // });
 });
 
 

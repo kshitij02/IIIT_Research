@@ -1,8 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-
+<meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <style>
+ body {
+        background-color: #F3EBF6;
+        font-family: 'Ubuntu', sans-serif;
+    }
   .user_image{
     position: absolute;
     height: 100%;
@@ -17,136 +24,142 @@
     -webkit-transition: width 0.4s ease-in-out;
     transition: width 0.4s ease-in-out;
   }
-
   input[type=text]:focus{
     width: 100%;
   }
+  .ulul {
+
+    background: linear-gradient(to right, #9C27B0, #E040FB);
+    list-style-type: none;
+    margin: 0;
+    padding: 5px;
+    overflow: hidden;
+    background-color: #f3f3f3;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 1px 16px;
+    text-decoration: none;
+}
+#heart{
+  color: green;
+}
+/*li a:hover:not(.active) {
+    background-color: #111;
+}*/
+.avatar{
+  height: 30px;
+}
+.active {
+    background-color: #4CAF50;
+}
+body, html {
+  height: 100%;
+  margin: 0;
+  font: 400 15px/1.8 "Lato", sans-serif;
+  color: #777;
+}
+.caption {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  width: 100%;
+  text-align: center;
+  color: #000;
+}
+
+.caption span.border {
+  background-color: #111;
+  color: #fff;
+  padding: 18px;
+  font-size: 25px;
+  letter-spacing: 10px;
+}
+
+h3 {
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  font: 20px "Lato", sans-serif;
+  color: #111;
+}
+
+
 </style>
 
 
-<title>Cyber Tech</title>
+<title>IIIT Research</title>
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link href="{{ url_for('static',filename = 'style.css') }}" rel="stylesheet" type="text/css">
+<!-- <link href="{{ url_for('static',filename = 'style.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ url_for('static',filename = 'bootstrap.min.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ url_for('static',filename = 'font-awesome.min.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ url_for('static',filename = 'theme.css') }}" rel="stylesheet" type="text/css">
-</head>
+ --></head>
 <body>
 <div id="preloader">
   <div id="status">&nbsp;</div>
 </div>
 <a class="scrollToTop" href="#"><i class="fa fa-angle-up"></i></a>
-<header id="header">
-   <nav class="navbar navbar-default navbar-static-top" role="navigation">
-     <div class="container">
-       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-        </button>
-        <a style="text-align: center;" class="navbar-brand" href="/timeline">IIIT Research<br><br><img style="height: 100%;" src="http://skilloutlook.com/wp-content/uploads/2018/03/1-5.jpg" alt=""></a>
-      </div>
-      <div id="navbar">
-        <a href="/timeline">
-          <img src="https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1" class="user_image">
-           <a style="text-align: center;" class="navbar-brand" href="/timeline">IIIT Research<br><br><img style="height: 100%;" src="http://skilloutlook.com/wp-content/uploads/2018/03/1-5.jpg" alt=""></a>
-        </a>
-      </div>
-      <br>
-      <div class="search">
-       <form action="#">
-         <input class="sch" type="text" placeholder="Search.." name="search">
-         <br><br>
-         <button class="btn" type="button" >By Student</button> 
-         <button class="btn" type="button" >By Prof</button> 
-         <button class="btn" type="button" >By Labs</button>
-         <button class="btn" type="button" >Logout</button>
-        </form>
-     </div>
-    </div>
-  </nav>
-</header>
-<section id="content">
-  <br><br><br>
-  <div class="container">
-    <div class="row">
-      {% block post_lab_start %}{% endblock %}
-      <div class="col-lg-3 col-md-3 col-sm-12">
-        <div class="right_sidebar">
-          <div class="single_widget">
-            <h2>Popular Post</h2>
-            <ul class="ppost_nav wow fadeInDown">
-              <li>
-                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
-                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
-                </div>
-              </li>
-              <li>
-                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
-                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
-                </div>
-              </li>
-              <li>
-                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
-                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
-                </div>
-              </li>
-              <li>
-                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
-                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
-                </div>
-              </li>
-              <li>
-                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
-                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
-                </div>
-              </li>
-              <li>
-                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
-                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
-                </div>
-              </li>
-              <li>
-                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
-                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
-                </div>
-              </li>
-              <li>
-                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
-                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
-                </div>
-              </li>
-              <li>
-                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
-                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
-                </div>
-              </li>
-              <li>
-                <div class="media"><a class="media-left" href="#"><img src="{{ url_for('static',filename ='70x70.jpg')}}"></a>
-                  <div class="media-body"><a class="catg_title" href="#">Aliquam malesuada diam eget turpis varius</a></div>
-                </div>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<ul class="ulul">
+  <li><a href="/timeline">
+          <img class="avatar" src="https://i1.wp.com/www.winhelponline.com/blog/wp-content/uploads/2017/12/user.png?fit=256%2C256&quality=100&ssl=1" class="user_image">
+        </a></li>
+  <li><a href="#home">Home</a></li>
+  <li><a href="#news">Timeline</a></li>
+  <li><a href="#contact">About</a></li>
+  <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
+  <li style="float:right"><input type="text" placeholder="Search.."></li>
+  
+</ul>
+
+<br><br>
+<div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+  <h3 style="text-align:center;">Parallax Demo</h3>
+  <p>Parallax scrolling is a web site trend where the background content is moved at a different speed than the foreground content while scrolling. Nascetur per nec posuere turpis, lectus nec libero turpis nunc at, sed posuere mollis ullamcorper libero ante lectus, blandit pellentesque a, magna turpis est sapien duis blandit dignissim. Viverra interdum mi magna mi, morbi sociis. Condimentum dui ipsum consequat morbi, curabitur aliquam pede, nullam vitae eu placerat eget et vehicula. Varius quisque non molestie dolor, nunc nisl dapibus vestibulum at, sodales tincidunt mauris ullamcorper, dapibus pulvinar, in in neque risus odio. Accumsan fringilla vulputate at quibusdam sociis eleifend, aenean maecenas vulputate, non id vehicula lorem mattis, ratione interdum sociis ornare. Suscipit proin magna cras vel, non sit platea sit, maecenas ante augue etiam maecenas, porta porttitor placerat leo.</p>
+    <p>Vote:
+        <button id="heart">
+          <span class="glyphicon glyphicon-heart"></span></button>
+      </p>
+</div><br><br>
+<div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+  <h3 style="text-align:center;">Parallax Demo</h3>
+  <p>Parallax scrolling is a web site trend where the background content is moved at a different speed than the foreground content while scrolling. Nascetur per nec posuere turpis, lectus nec libero turpis nunc at, sed posuere mollis ullamcorper libero ante lectus, blandit pellentesque a, magna turpis est sapien duis blandit dignissim. Viverra interdum mi magna mi, morbi sociis. Condimentum dui ipsum consequat morbi, curabitur aliquam pede, nullam vitae eu placerat eget et vehicula. Varius quisque non molestie dolor, nunc nisl dapibus vestibulum at, sodales tincidunt mauris ullamcorper, dapibus pulvinar, in in neque risus odio. Accumsan fringilla vulputate at quibusdam sociis eleifend, aenean maecenas vulputate, non id vehicula lorem mattis, ratione interdum sociis ornare. Suscipit proin magna cras vel, non sit platea sit, maecenas ante augue etiam maecenas, porta porttitor placerat leo.</p>
+    <p>Vote:
+        <button id="heart">
+          <span class="glyphicon glyphicon-heart"></span></button>
+      </p>
+</div><br><br>
+<div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;">
+  <h3 style="text-align:center;">Parallax Demo</h3>
+  <p>Parallax scrolling is a web site trend where the background content is moved at a different speed than the foreground content while scrolling. Nascetur per nec posuere turpis, lectus nec libero turpis nunc at, sed posuere mollis ullamcorper libero ante lectus, blandit pellentesque a, magna turpis est sapien duis blandit dignissim. Viverra interdum mi magna mi, morbi sociis. Condimentum dui ipsum consequat morbi, curabitur aliquam pede, nullam vitae eu placerat eget et vehicula. Varius quisque non molestie dolor, nunc nisl dapibus vestibulum at, sodales tincidunt mauris ullamcorper, dapibus pulvinar, in in neque risus odio. Accumsan fringilla vulputate at quibusdam sociis eleifend, aenean maecenas vulputate, non id vehicula lorem mattis, ratione interdum sociis ornare. Suscipit proin magna cras vel, non sit platea sit, maecenas ante augue etiam maecenas, porta porttitor placerat leo.</p>
+  <p>Vote:
+        <button id="heart">
+          <span class="glyphicon glyphicon-heart"></span></button>
+      </p>
+</div>
 <script src="{{ url_for('static',filename = 'jquery.min.js') }}"></script>
 <script src="{{ url_for('static',filename = 'wow.min.js') }}"></script>
 <script src="{{ url_for('static',filename = 'bootstrap.min.js') }}"></script>
 <script src="{{ url_for('static',filename = 'custom.js') }}"></script>
-<!-- <script type="text/javascript">
-    $(document).ready(function(){
-      $(".sch").click(function(){
-        $(".btn").show(500);
-      });
+<script type="text/javascript">
+    // $(document).ready(function(){
+    //   $("#heart").click(function(){
+    //     document.getElementById("heart").style.color = "red";
+    //   });
+    // });
+    $(document).ready(function($){
+    $('#heart').on("click", function(){
+        $(this).css("color", "red");
     });
-</script> -->
+});
+</script>
 </body>
 </html>
