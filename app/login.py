@@ -28,10 +28,7 @@ import datetime
 # 		return li
 # 	conn.close()
 
-
 def insert_post(student_id,researcharea,lab_id,prof_id,post_text):
-	# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-	# db_path = os.path.join(BASE_DIR, "project.db")
  	conn = sqlite3.connect("project.db")
 	conn.text_factory = str
 	t =(student_id,researcharea,lab_id,prof_id,post_text,datetime.datetime.now())

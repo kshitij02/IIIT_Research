@@ -96,9 +96,23 @@ def insert_login(id,name,password,type):
 	#li=c.execute("SELECT * FROM login" )
 	#print [l for l in li]
 
-def insert_post():
-	return
-	
+def insert_post(student_id,researcharea,lab_id,prof_id,post_text):
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+ 	conn = sqlite3.connect("project.db")
+	conn.text_factory = str
+	t =(student_id,researcharea,lab_id,prof_id,post_text,datetime.datetime.now())
+	c=conn.cursor()
+	try :
+		c.execute("INSERT into post (student_id,researcharea,lab,prof_id,post_text,time) values(?,?,?,?,?,?) ", t )
+		conn.commit()
+		conn.close()
+		return True
+	except sqlite3.IntegrityError:
+		conn.close()
+		return "Post cann't be inserted "
+
 
 
 def check_user(id,password):
