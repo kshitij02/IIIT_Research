@@ -83,10 +83,10 @@ def insert_login(id,name,password,type):
 	db_path = os.path.join(BASE_DIR, "project.db")
 	conn = sqlite3.connect(db_path)
 	conn.text_factory = str
-	t =(id,name,password,type)
+	t =(id,name,password,type,"","")
 	c=conn.cursor()
 	try :
-		c.execute("INSERT into login values(?,?,?,?) ", t )
+		c.execute("INSERT into login values(?,?,?,?,?,?) ", t )
 		conn.commit()
 		conn.close()
 		return True
@@ -95,6 +95,9 @@ def insert_login(id,name,password,type):
 		return "User id already exists"
 	#li=c.execute("SELECT * FROM login" )
 	#print [l for l in li]
+
+def insert_post():
+	return
 	
 
 
