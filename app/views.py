@@ -83,10 +83,10 @@ def insert_login(id,name,password,type):
 	db_path = os.path.join(BASE_DIR, "project.db")
 	conn = sqlite3.connect(db_path)
 	conn.text_factory = str
-	t =(id,name,password,type,"","")
+	t =(id,name,password,type)
 	c=conn.cursor()
 	try :
-		c.execute("INSERT into login values(?,?,?,?,?,?) ", t )
+		c.execute("INSERT into login (id,name,password,type) values(?,?,?,?) ", t )
 		conn.commit()
 		conn.close()
 		return True
@@ -95,6 +95,25 @@ def insert_login(id,name,password,type):
 		return "User id already exists"
 	#li=c.execute("SELECT * FROM login" )
 	#print [l for l in li]
+
+def update_login(id,name,type,password,native,dob):
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	t =(name,password,type,native,dob,id)
+	c=conn.cursor()
+	try :
+		c.execute("update login set name=?, password=?,type=?,native=?,dob=? where id=?", t)
+		conn.commit()
+		conn.close()
+		return True
+	except sqlite3.IntegrityError:
+		conn.close()
+		return "User id doesn't exists"
+	#li=c.execute("SELECT * FROM login" )
+	#print [l for l in li]
+
 
 def insert_post(student_id,researcharea,lab_id,prof_id,post_text):
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -113,6 +132,21 @@ def insert_post(student_id,researcharea,lab_id,prof_id,post_text):
 		conn.close()
 		return "Post cann't be inserted "
 
+def insert_follow(student_id,id_2):
+ 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+ 	conn.text_factory = str
+	t =(student_id,id_2)
+	c=conn.cursor()
+	try :
+		c.execute("INSERT into follow (following,follower) values(?,?) ", t )
+		conn.commit()
+		conn.close()
+		return True
+	except sqlite3.IntegrityError:
+		conn.close()
+		return "already exists"
 
 
 def check_user(id,password):
@@ -130,6 +164,49 @@ def check_user(id,password):
 	else :
 		return True
 	conn.close()
+
+
+def show_post(id):
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	conn.text_factory = str
+	t=(id,id,)
+	c=conn.cursor()
+	# li=c.execute("SELECT following FROM follow WHERE follower = ? ", t )
+	# li=c.fetchall()
+	# # t1=(li,)
+ 	li=c.execute("SELECT * From post where student_id in (SELECT following FROM follow WHERE follower = ?) or prof_id in (SELECT following FROM follow WHERE follower = ?) ORDER BY time desc",t)
+	li=c.fetchall()
+	print li
+	conn.close()
+
+def list_lab():
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	c=conn.cursor()
+ 	li=c.execute("SELECT DISTINCT lab FROM login")
+	li=c.fetchall()
+	print li
+	conn.close()
+
+def list_prof(lab):
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	c=conn.cursor()
+	t=(lab,)
+ 	li=c.execute("SELECT id FROM login where lab=?",t)
+	li=c.fetchall()
+	print li
+	conn.close()
+
+
+
 
 @app.route('/registrationNext',methods=['POST'])
 def registrationNext():

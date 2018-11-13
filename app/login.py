@@ -40,9 +40,76 @@ def insert_post(student_id,researcharea,lab_id,prof_id,post_text):
 		return True
 	except sqlite3.IntegrityError:
 		conn.close()
+		return "Post already exists"
+
+def insert_follow(student_id,id_2):
+ 	conn = sqlite3.connect("project.db")
+	conn.text_factory = str
+	t =(student_id,id_2)
+	c=conn.cursor()
+	try :
+		c.execute("INSERT into follow (following,follower) values(?,?) ", t )
+		conn.commit()
+		conn.close()
+		return True
+	except sqlite3.IntegrityError:
+		conn.close()
+		return "already exists"
+
+
+
+def update_login(id,name,type,password,native,dob):
+	# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	# db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect("project.db")
+	conn.text_factory = str
+	t =(name,password,type,native,dob,id)
+	c=conn.cursor()
+	try :
+		c.execute("update login set name=?, password=?,type=?,native=?,dob=? where id=?", t)
+		conn.commit()
+		conn.close()
+		return True
+	except sqlite3.IntegrityError:
+		conn.close()
 		return "User id already exists"
+def show_post(id):
+	# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	# db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect("project.db")
+	conn.text_factory = str
+	t=(id,id,)
+	c=conn.cursor()
+	# li=c.execute("SELECT following FROM follow WHERE follower = ? ", t )
+	# li=c.fetchall()
+	# # t1=(li,)
+ 	li=c.execute("SELECT * From post where student_id in (SELECT following FROM follow WHERE follower = ?) or prof_id in (SELECT following FROM follow WHERE follower = ?) ORDER BY time desc",t)
+	li=c.fetchall()
+	print li
+	conn.close()
 
+def list_lab():
+	conn = sqlite3.connect("project.db")
+	conn.text_factory = str
+	c=conn.cursor()
+ 	li=c.execute("SELECT DISTINCT lab FROM login")
+	li=c.fetchall()
+	print li
+	conn.close()
 
+def list_prof(lab):
+	conn = sqlite3.connect("project.db")
+	conn.text_factory = str
+	c=conn.cursor()
+	t=(lab,)
+ 	li=c.execute("SELECT id FROM login where lab=?",t)
+	li=c.fetchall()
+	print li
+	conn.close()	
 
 if __name__ == '__main__':
-	insert_post("kshitij.paliwal@students.iiit.ac.in","AI ","CVIT", "choppela@faculty.iiit.ac.in" ,"This is frist post")	
+	insert_post("choppela@faculty.iiit.ac.in","AI ","CVIT", "" ,"This is frist post choppela")	
+	insert_follow("choppela@faculty.iiit.ac.in","sivangi.singh@students.iiit.ac.in")
+	show_post("sivangi.singh@students.iiit.ac.in")
+
+	# update_login("kshitij.paliwal@students.iiit.ac.in","Kshitij","student","kshitij","indore","02/09/1996")
