@@ -133,7 +133,15 @@ def increase_vote_count(id,post_id):
 	conn.commit()
 	conn.close()
 	
-
+def all_professor():
+	conn = sqlite3.connect("project.db")
+	conn.text_factory = str
+	c=conn.cursor()
+	li=c.execute("SELECT name,id from login where type='professor'")
+	li=c.fetchall()
+	# print li
+	conn.close()
+	return li
 if __name__ == '__main__':
 	# insert_post("niharika.khare@students.iiit.ac.in","AI ","SERC", "" ,"This is frist post niharika")	
 	# insert_follow("chopella@faculty.iiit.ac.in","sivangi.singh@students.iiit.ac.in")
@@ -141,4 +149,5 @@ if __name__ == '__main__':
 	# show_post("sivangi.singh@students.iiit.ac.in")
 	# most_publications_labs()
 	# update_login("kshitij.paliwal@students.iiit.ac.in","Kshitij","student","kshitij","indore","02/09/1996")
-	increase_vote_count("kshitij.paliwal@students.iiit.ac.in",1)
+	# increase_vote_count("kshitij.paliwal@students.iiit.ac.in",1)
+	print all_professor()

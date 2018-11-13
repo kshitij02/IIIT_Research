@@ -6,13 +6,17 @@
 <h1 style="text-align: center;">
     Lists Of Professors
 </h1>
-{% for i in range(10)  %}
+		{% for p in prof_li %}
+			<div style="color: #777;background-color:white;text-align:center;padding:25px 40px;text-align: justify;border-radius:50px;margin: 10px;">
+			<div ><a href="/about/{{p[1]}}">{{p[0]}}</a ></div>
+		</div>
 
-<div style="color: #777;background-color:white;text-align:center;padding:25px 40px;text-align: justify;border-radius:50px">
-<div><a href=/prof_page>Prof. {{i}} </a></div>
-</div>
-<br>
-{% endfor %}
-</div>
 
+		{% endfor %}
+</div>
+<script type="text/javascript">
+	function sendID(id){
+  		document.getElementById("prof_abt").action = '/about/' + id;
+	}
+</script>
 {% endblock %}

@@ -71,8 +71,8 @@
   </p>
   <p><b>About</b><br>{{post[7]}}</p>
     <p>
-        <button id="{{post[0]}}" class="heart">Vote
-          <span class="glyphicon glyphicon-heart"></span></button> {{post[6]}}
+        <a href="vote_count_increment/{{post[0]}}"><button id="{{post[0]}}" class="heart">Vote
+          <span class="glyphicon glyphicon-heart"></span></button> {{post[6]}}</a>
       </p>
 </div><br>
 <script type="text/javascript">
@@ -80,7 +80,7 @@
     $('#{{post[0]}}').on("click", function(){
       const element = document.getElementById('{{post[0]}}')
       const color = element.style.color
-      // console.log(color)
+      // console.log({{post[0]}})
       if(color=="red")
         $(this).css("color", "black");
       else

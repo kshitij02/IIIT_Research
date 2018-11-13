@@ -63,14 +63,16 @@ def index():
 def timeline():
 	if session['user_logged_in']==True:
 		posts=show_timeline(session['userID'])
-		# return str(len(posts))
+		if len(posts)==0:
+			return render_template('timeline_noPost.html',id=session['userID'])
 		return render_template('timeline.html',id=session['userID'],posts=posts)
 	return	redirect(url_for('login'))
 	
 @app.route('/lab')
 def lab():
 	if session['user_logged_in']==True:
-		return render_template('lab.html',id=session['userID'])
+		li=list_lab()
+		return render_template('lab.html',id=session['userID'],li=li)
 	return	redirect(url_for('login'))
 
 @app.route('/about/<id>')
@@ -97,6 +99,14 @@ def about(id):
 	return	redirect(url_for('login'))
 
 
+@app.route('/about_lab/<lab_name>')
+def about_lab(lab_name):
+	if session['user_logged_in']==True:
+		prof_li=list_prof(lab_name)
+		return render_template('professor.html',id=session['userID'],prof_li=prof_li)
+	return	redirect(url_for('login'))
+
+
 @app.route('/trending')
 def trending():
 	if session['user_logged_in']==True:
@@ -106,9 +116,10 @@ def trending():
 
 @app.route('/professor')
 def professor():
-	if session['user_logged_in']==True:
-		return render_template('professor.html',id=session['userID'])
-	return	redirect(url_for('login'))
+    if session['user_logged_in']==True:
+        prof_li = all_professor()
+        return render_template('professor.html',id=session['userID'],prof_li= prof_li)
+    return    redirect(url_for('login'))
 
 @app.route('/')	
 @app.route('/login')
@@ -285,10 +296,10 @@ def list_lab():
 	conn = sqlite3.connect(db_path)
 	conn.text_factory = str
 	c=conn.cursor()
- 	li=c.execute("SELECT DISTINCT lab FROM login where lab!=None")
+ 	li=c.execute("SELECT DISTINCT lab FROM login where lab!='None'")
 	li=c.fetchall()
-	print li
 	conn.close()
+	return li
 
 def list_prof(lab):
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -297,10 +308,10 @@ def list_prof(lab):
 	conn.text_factory = str
 	c=conn.cursor()
 	t=(lab,)
- 	li=c.execute("SELECT id FROM login where lab=?",t)
+ 	li=c.execute("SELECT name,id FROM login where lab=?",t)
 	li=c.fetchall()
-	print li
 	conn.close()
+	return li
 
 
 def most_voted_post():
@@ -339,6 +350,11 @@ def most_publications_labs():
 	conn.close()
 
 
+@app.route('/vote_count_increment/<post_id>')
+def vote_count_increment(post_id):
+	increase_vote_count(session['userID'],post_id)
+	return redirect(url_for('login'))
+
 
 def increase_vote_count(id,post_id):
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -348,8 +364,11 @@ def increase_vote_count(id,post_id):
 	c=conn.cursor()
 	t=(post_id,)
 	t1=(post_id,id)
-	c.execute("UPDATE post set vote_count=vote_count+1 where post_id=?",t)
-	c.execute("INSERT into vote_table (post_id,voted_person_id) values (?,?) ", t1 )
+	try:
+		c.execute("UPDATE post set vote_count=vote_count+1 where post_id=?",t)
+		c.execute("INSERT into vote_table (post_id,voted_person_id) values (?,?) ", t1 )
+	except:
+		return "Error"	
 	conn.commit()
 	conn.close()
 	
@@ -421,3 +440,15 @@ def read_search():
 		else:
 			return render_template('search.html',li = li)
 		conn.close()	
+
+def all_professor():
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	c=conn.cursor()
+	li=c.execute("SELECT name,id from login where type='professor'")
+	li=c.fetchall()
+	# print li
+	conn.close()
+	return li

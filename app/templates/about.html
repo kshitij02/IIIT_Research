@@ -54,8 +54,15 @@
     
     <!-- Middle Column -->
     <div class="w3-col m7">
-    
-      {% for post in posts %}
+    {% if posts==[] %}
+    <div class="container">
+      <div style="color: #777;background-color:white;text-align:center;padding:25px 40px;text-align: justify;border-radius:50px;margin: 10px;">
+        <div ><h1 class="text-center">No posts...!!</h1>
+      </div>
+    </div>
+    </div>    
+    {% endif %}
+    {% for post in posts %}
   <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;border-radius:50px;margin:15px ">
   <h3 style="text-align:center;">Research Area:{{post[1]}}</h3>
   <p>
@@ -82,6 +89,7 @@
     });
 });
 </script>
+    
 {% endfor %}
     <!-- End Middle Column -->
      </div>
