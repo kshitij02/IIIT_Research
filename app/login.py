@@ -46,9 +46,11 @@ def insert_follow(student_id,id_2):
  	conn = sqlite3.connect("project.db")
 	conn.text_factory = str
 	t =(student_id,id_2)
+	l=(student_id,)
 	c=conn.cursor()
 	try :
 		c.execute("INSERT into follow (following,follower) values(?,?) ", t )
+		c.execute("UPDATE login set no_of_followers=no_of_followers+1 where id=?",l)
 		conn.commit()
 		conn.close()
 		return True
@@ -108,8 +110,9 @@ def list_prof(lab):
 	conn.close()	
 
 if __name__ == '__main__':
-	insert_post("choppela@faculty.iiit.ac.in","AI ","CVIT", "" ,"This is frist post choppela")	
-	insert_follow("choppela@faculty.iiit.ac.in","sivangi.singh@students.iiit.ac.in")
-	show_post("sivangi.singh@students.iiit.ac.in")
+	# insert_post("choppela@faculty.iiit.ac.in","AI ","CVIT", "" ,"This is frist post choppela")	
+	insert_follow("chopella@faculty.iiit.ac.in","sivangi.singh@students.iiit.ac.in")
+	insert_follow("kshitij.paliwal@students.iiit.ac.in","sivangi.singh@students.iiit.ac.in")
+	# show_post("sivangi.singh@students.iiit.ac.in")
 
 	# update_login("kshitij.paliwal@students.iiit.ac.in","Kshitij","student","kshitij","indore","02/09/1996")

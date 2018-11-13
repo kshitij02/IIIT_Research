@@ -78,6 +78,10 @@ def login():
 def registration():
 	return render_template('registration.html')
 
+@app.route('/follow')
+def follow():
+	return insert_follow(email_1,email_2)
+
 def insert_login(id,name,password,type):
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 	db_path = os.path.join(BASE_DIR, "project.db")
@@ -115,6 +119,7 @@ def update_login(id,name,type,password,native,dob):
 	#print [l for l in li]
 
 
+
 def insert_post(student_id,researcharea,lab_id,prof_id,post_text):
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 	db_path = os.path.join(BASE_DIR, "project.db")
@@ -138,9 +143,11 @@ def insert_follow(student_id,id_2):
 	conn = sqlite3.connect(db_path)
  	conn.text_factory = str
 	t =(student_id,id_2)
+	l=(student_id,)
 	c=conn.cursor()
 	try :
 		c.execute("INSERT into follow (following,follower) values(?,?) ", t )
+		c.execute("UPDATE login set no_of_followers=no_of_followers+1 where id=?",l)
 		conn.commit()
 		conn.close()
 		return True
@@ -206,6 +213,19 @@ def list_prof(lab):
 	conn.close()
 
 
+def most_voted_post():
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	c=conn.cursor()
+ 	li=c.execute("SELECT * FROM post ORDER BY vote DESC limit 10")
+	li=c.fetchall()
+	print li
+	conn.close()
+
+
+# def most_
 
 
 @app.route('/registrationNext',methods=['POST'])
