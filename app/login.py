@@ -109,10 +109,22 @@ def list_prof(lab):
 	print li
 	conn.close()	
 
-if __name__ == '__main__':
-	# insert_post("choppela@faculty.iiit.ac.in","AI ","CVIT", "" ,"This is frist post choppela")	
-	insert_follow("chopella@faculty.iiit.ac.in","sivangi.singh@students.iiit.ac.in")
-	insert_follow("kshitij.paliwal@students.iiit.ac.in","sivangi.singh@students.iiit.ac.in")
-	# show_post("sivangi.singh@students.iiit.ac.in")
 
+
+def most_publications_labs():
+	conn = sqlite3.connect("project.db")
+	conn.text_factory = str
+	c=conn.cursor()
+ 	li=c.execute("SELECT lab ,COUNT(*) FROM post GROUP BY lab ORDER BY COUNT(*) DESC limit 10 ")
+	li=c.fetchall()
+	print li
+	conn.close()
+
+
+if __name__ == '__main__':
+	# insert_post("niharika.khare@students.iiit.ac.in","AI ","SERC", "" ,"This is frist post niharika")	
+	# insert_follow("chopella@faculty.iiit.ac.in","sivangi.singh@students.iiit.ac.in")
+	# insert_follow("kshitij.paliwal@students.iiit.ac.in","sivangi.singh@students.iiit.ac.in")
+	# show_post("sivangi.singh@students.iiit.ac.in")
+	# most_publications_labs()
 	# update_login("kshitij.paliwal@students.iiit.ac.in","Kshitij","student","kshitij","indore","02/09/1996")

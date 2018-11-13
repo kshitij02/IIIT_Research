@@ -126,10 +126,16 @@ def insert_post(student_id,researcharea,lab_id,prof_id,post_text):
 	conn = sqlite3.connect(db_path)
  	conn = sqlite3.connect("project.db")
 	conn.text_factory = str
-	t =(student_id,researcharea,lab_id,prof_id,post_text,datetime.datetime.now())
+	if session['type']=="professor":
+		prof_id=student_id
+		student_id=""
+		post_person_id=prof_id
+	else:
+		post_person_id=prof_id
+	t =(student_id,researcharea,lab_id,prof_id,post_text,datetime.datetime.now(),post_person_id)
 	c=conn.cursor()
 	try :
-		c.execute("INSERT into post (student_id,researcharea,lab,prof_id,post_text,time) values(?,?,?,?,?,?) ", t )
+		c.execute("INSERT into post (student_id,researcharea,lab,prof_id,post_text,time,post_person_id) values(?,?,?,?,?,?,?) ", t )
 		conn.commit()
 		conn.close()
 		return True
@@ -225,7 +231,47 @@ def most_voted_post():
 	conn.close()
 
 
-# def most_
+def most_followed_prof():
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	c=conn.cursor()
+ 	li=c.execute("SELECT * FROM login ORDER BY no_of_followers DESC limit 10")
+	li=c.fetchall()
+	print li
+	conn.close()
+
+
+def most_publications_labs():
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	c=conn.cursor()
+ 	li=c.execute("SELECT lab ,COUNT(*) FROM post GROUP BY lab ORDER BY COUNT(*) DESC limit 10  ")
+	li=c.fetchall()
+	print li
+	conn.close()
+
+def timeline_qurrey(id):
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	c=conn.cursor()
+	t=(id,)
+	l=c.execute("SELECT * login where id=?",t)
+	l=c.fetchall()
+	type=l[0]
+	if type=="student":
+ 		li=c.execute("SELECT * post where student_id=? ",t)
+ 	elif type=="professor":
+ 		li=c.execute("SELECT * post where prof_id=? ",t)
+	li=c.fetchall()
+	print li
+	conn.close()	
+
 
 
 @app.route('/registrationNext',methods=['POST'])
@@ -240,6 +286,19 @@ def registrationNext():
 		# flash("User id already Exits!!")
 		return redirect(url_for('registration'))
 
+def type_find():
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	c=conn.cursor()
+	t=(session['userID'],)
+	li=c.execute("SELECT type from login where id=? ",t)
+	li=c.fetchall()
+	# print li
+	conn.close()
+	return li[0]
+
 @app.route('/loginNext',methods=['POST'])
 def loginNext():
 	if request.method=='POST':
@@ -248,6 +307,7 @@ def loginNext():
 		if check_user(id,password)==True:
 			session['user_logged_in']=True
 			session['userID']=id
+			session['type']=type_find()
 			return redirect(url_for('index'))
 		else :
 			# flash( "Invaild credentials!")
@@ -258,18 +318,21 @@ def logout():
 	session['user_logged_in']=False
 	session.pop('userID',None)
 	return render_template('login.html')
-# @app.route('/trending')
-# def trending():
-# 	return render_template('trending.html')
 
-
-# @app.route('/loginNext',methods=['GET','POST'])
-# def loginNext():
-# 	# To find out the method of request, use 'request.method'
-# 	if request.method == "POST":
-# 		print request.args
-# 		userID = request.args.get("id")
-# 		password = request.args.get("password")
-# 		# Can perform some password validation here
-# 		return "Login Successful for: %s" % userID
-
+@app.route('/read_search',methods=['POST','GET'])
+def read_search():
+	if request.method=='POST' or request.method=='GET':
+		search_name = request.form.get("search_box")
+		BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+		db_path = os.path.join(BASE_DIR, "project.db")
+		conn = sqlite3.connect(db_path)
+		conn.text_factory = str
+		t = (search_name,)
+		c = conn.cursor()
+		li = c.execute("SELECT * FROM login WHERE name =?",t)
+		li = c.fetchall()
+		if len(li) == 0:
+			return "No such person exist"
+		else:
+			return render_template('search.html',li = li)
+		conn.close()	

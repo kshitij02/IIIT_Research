@@ -161,8 +161,9 @@ h3 {
   <li><a href="/professor">Professor</a></li>
     
   <li style="float:right"><a href="{{ url_for('logout') }}">Logout</a></li>
-  <li style="float:right"><input type="text" placeholder="Search.."></li>
-  
+  <form action="/read_search" method="POST">
+  <li style="float:right"><input type="search" id="search_box" name="search_box" placeholder="Search.."></li>
+  </form>
 </ul>
 
 <br><br>
