@@ -108,22 +108,20 @@ h2{
 }
 </style>
 <section id="timeline">
-{% for i in range(10) %}
-
-  <article>
+{% for l in posts %}
+<article>
     <div class="inner">
       <span class="date">
         <span class="day">30<sup>th</sup></span>
         <span class="month">Jan</span>
         <span class="year">2014</span>
       </span>
-      <h2>Research Area:{{i}}</h2>
+      <h2>Research Area:{{l[1]}}</h2>
       <p>
-    	Lab:{{i}}<br>
-    	Professor:{{i}}<br>
-  		
-    	Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean quis rutrum nunc, eget dictum massa. Nam faucibus felis nec augue adipiscing, eget commodo libero mattis.
-    	<br>Vote Count:{{i}}
+      Lab:{{l[2]}}<br>
+      Professor:{{l[4]}}<br>
+      {{l[7]}}
+      <br>Vote Count:{{l[6]}}
     </div>
   </article>
   {% endfor %}

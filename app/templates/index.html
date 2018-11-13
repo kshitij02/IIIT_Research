@@ -5,10 +5,10 @@
   <div class="w3-col m3" style="margin:15px;">
       <div class="w3-card w3-round" style="border-radius: 20px;">
         <div class="w3-white" style="border-radius: 20px;">
-          <button onclick="myFunction('Demo1')" class="w3-button w3-block ulul w3-left-align" style="border-radius: 20px;"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Followers</button>
+          <button onclick="myFunction('Demo1')" class="w3-button w3-block ulul w3-left-align" style="border-radius: 20px;"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Following</button>
           <div id="Demo1" class="w3-hide w3-container">
              {% for i in lis %}
-            <a href="/index">{{i[0]}}</a ><br>
+            <a href="/about/{{i[1]}}">{{i[0]}}</a ><br>
             {% endfor %}
           </div>
         </div>  
@@ -20,33 +20,39 @@
         <b>Write A Post</b>
       </div>
       <div class="col-lg">
-        <button class="heart" style="margin: 1px; border-style: none; border-radius: 20px; background: linear-gradient(to right, #9C27B0, #E040FB);color: white;">POST</button>
-      </div>
-      <div class="col-lg">
         <button class="heart" style="margin: 1px; border-style: none; border-radius: 20px; background: linear-gradient(to right, #9C27B0, #E040FB);color: white;" onclick="clear_post();">New Post</button>
       </div>
+      <form action="/insert_post" method="POST">
+      <div class="col-lg">
+        <button class="heart" style="margin: 1px; border-style: none; border-radius: 20px; background: linear-gradient(to right, #9C27B0, #E040FB);color: white;">POST</button>
+      </div>
+      
     </div>
     <div class="row">
-      <div class='col' style="background-color: white;margin-left:12px; text-align: center;">
-          <select class="sel" required name="type" style="width: 50%; padding: 10px; margin: 5px; border-style: none; border-radius: 20px; color: grey;">
+      <div class="col" style="background-color: white;margin-left:12px; text-align: center;">
+        <input type="text" id="research_area" required name="research_area" placeholder="Research Area" style="width: 50%; padding: 10px; margin: 5px; border-style: none; border-radius: 20px;">
+      </div>
+      <div class='col' style="background-color: white;text-align: center;">
+          <select class="sel" id="prof" required name="prof" style="width: 50%; padding: 10px; margin: 5px; border-style: none; border-radius: 20px; color: grey;">
                   <option value='default' selected>Tag Prof</option>
-                  <option><button class="list_button">A.K. Das</button></option>
-                  <option><button class="list_button">Choppella</button></option>
-                  <option><button class="list_button">Pudi</button></option>
+                  {% for i in range(4) %}
+                  <option value="ram{{i}}">ram{{i}}</option>
+                  {% endfor %}
             </select><br>
       </div>
       <div class='col' style="background-color: white;margin-right:12px; text-align: center;">
-        <select class="sel" required name="type" style="width: 50%; padding: 10px; margin: 5px; border-style: none; border-radius: 20px; color: grey;">
+        <select class="sel" id="lab" required name="lab" style="width: 50%; padding: 10px; margin: 5px; border-style: none; border-radius: 20px; color: grey;">
                   <option value='default' selected>Tag Lab</option>
-                  <option><button class="list_button">CVIT</button></option>
-                  <option><button class="list_button">SERC</button></option>
-                  <option><button class="list_button">LSTM</button></option>
+                  <option value="cvit">CVIT</option>
+                  <option value="serc">SERC</option>
+                  <option value="lstm">LSTM</option>
             </select><br>
       </div>
     </div>
     <div class="row">
-      <textarea id='post_content' rows='4' placeholder="What's New?"></textarea>
+      <textarea id='post_content' name="post_content" placeholder="About"></textarea>
     </div>
+  </form>
   </div>
   <script type="text/javascript">
     function clear_post() {
@@ -55,24 +61,24 @@
       document.getElementsByName('type')[1].value = 'default';
     }
   </script>
-{% for i in range(4) %}
+{% for post in posts %}
   <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;border-radius:50px;margin:15px ">
-  <h3 style="text-align:center;">Research Area:{{i}}</h3>
+  <h3 style="text-align:center;">Research Area:{{post[1]}}</h3>
   <p>
-    Lab:{{i}}<br>
-    Professor:{{i}}<br>
-    Student:{{i}}<br>
+    Lab:{{post[2]}}<br>
+    Professor:{{post[4]}}<br>
+    Student:{{post[3]}}<br>
   </p>
-  <p><b>About</b><br>Parallax scrolling is a web site trend where the background content is moved at a different speed than the foreground content while scrolling. Nascetur per nec posuere turpis, lectus nec libero turpis nunc at, sed posuere mollis ullamcorper libero ante lectus, blandit pellentesque a, magna turpis est sapien duis blandit dignissim. Viverra interdum mi magna mi, morbi sociis. Condimentum dui ipsum consequat morbi, curabitur aliquam pede, nullam vitae eu placerat eget et vehicula. Varius quisque non molestie dolor, nunc nisl dapibus vestibulum at, sodales tincidunt mauris ullamcorper, dapibus pulvinar, in in neque risus odio. Accumsan fringilla vulputate at quibusdam sociis eleifend, aenean maecenas vulputate, non id vehicula lorem mattis, ratione interdum sociis ornare. Suscipit proin magna cras vel, non sit platea sit, maecenas ante augue etiam maecenas, porta porttitor placerat leo.</p>
+  <p><b>About</b><br>{{post[7]}}</p>
     <p>
-        <button id="{{i}}" class="heart">Vote
-          <span class="glyphicon glyphicon-heart"></span></button>
+        <button id="{{post[0]}}" class="heart">Vote
+          <span class="glyphicon glyphicon-heart"></span></button> {{post[6]}}
       </p>
 </div><br>
 <script type="text/javascript">
     $(document).ready(function($){
-    $('#{{i}}').on("click", function(){
-      const element = document.getElementById('{{i}}')
+    $('#{{post[0]}}').on("click", function(){
+      const element = document.getElementById('{{post[0]}}')
       const color = element.style.color
       // console.log(color)
       if(color=="red")

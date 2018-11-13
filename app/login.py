@@ -15,6 +15,7 @@ import datetime
 # 	#li=c.execute("SELECT * FROM login" )
 # 	#print [l for l in li]
 # 	conn.close()
+
 # def check_user(id,password):
 # 	conn = sqlite3.connect('project.db')
 # 	conn.text_factory = str
@@ -121,6 +122,18 @@ def most_publications_labs():
 	conn.close()
 
 
+def increase_vote_count(id,post_id):
+	conn = sqlite3.connect("project.db")
+	conn.text_factory = str
+	c=conn.cursor()
+	t=(post_id,)
+	t1=(post_id,id)
+	c.execute("UPDATE post set vote_count=vote_count+1 where post_id=?",t)
+	c.execute("INSERT into vote_table (post_id,voted_person_id) values (?,?) ", t1 )
+	conn.commit()
+	conn.close()
+	
+
 if __name__ == '__main__':
 	# insert_post("niharika.khare@students.iiit.ac.in","AI ","SERC", "" ,"This is frist post niharika")	
 	# insert_follow("chopella@faculty.iiit.ac.in","sivangi.singh@students.iiit.ac.in")
@@ -128,3 +141,4 @@ if __name__ == '__main__':
 	# show_post("sivangi.singh@students.iiit.ac.in")
 	# most_publications_labs()
 	# update_login("kshitij.paliwal@students.iiit.ac.in","Kshitij","student","kshitij","indore","02/09/1996")
+	increase_vote_count("kshitij.paliwal@students.iiit.ac.in",1)

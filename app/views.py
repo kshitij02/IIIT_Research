@@ -24,17 +24,47 @@ app.secret_key = "Ramukaka"
 # session[userlogedin]=False
 # session = Session()
 # session[user_logged_in]=False
+from flask import render_template
+from flask import url_for,redirect,session
+from flask import request
+from datetime import datetime
+import sqlite3
+import os.path
+# from flask import Flask, session
+# from flask.ext.session import Session
+# from flask.ext.session import Session
+
+
+# Imported a function to render templates
+
+from app import app
+
+app.secret_key = "Ramukaka"
+ 
+# app = Flask(__name__)
+
+# @app.route('/main')
+# def index():
+# 	user = {'nickname': 'Mitesh'}
+# 	return render_template('stud.html',title='Student',user=user)
+
+# session[userlogedin]=False
+# session = Session()
+# session[user_logged_in]=False
 @app.route('/index')
 def index():
 	if session['user_logged_in']==True:
-		lis=list_followers()
-		return render_template('index.html',id=session['userID'],lis=lis)
+		lis=list_following()
+		posts=show_post()
+		return render_template('index.html',id=session['userID'],lis=lis,posts=posts)
 	return	redirect(url_for('login'))
 
 @app.route('/timeline')
 def timeline():
 	if session['user_logged_in']==True:
-		return render_template('timeline.html',id=session['userID'])
+		posts=show_timeline(session['userID'])
+		# return str(len(posts))
+		return render_template('timeline.html',id=session['userID'],posts=posts)
 	return	redirect(url_for('login'))
 	
 @app.route('/lab')
@@ -60,8 +90,10 @@ def about(id):
 			followed=0
 		lin=c.execute("SELECT name,type,native,dob,id FROM login WHERE id= ?",names)
 		lin=c.fetchall()
+		lis=list_follower(id)
+		posts=show_timeline(id)
 		for li in lin:
-			return render_template('about.html',id=session['userID'],name=li[0], post=li[1],place=li[2],dob=li[3],id2=li[4],followed=followed)
+			return render_template('about.html',id=session['userID'],li=li,followed=followed,lis=lis,posts=posts)
 	return	redirect(url_for('login'))
 
 
@@ -94,18 +126,29 @@ def follow(id2):
 	return insert_follow(id2=id2,id1=session['userID'])
 
 
-def list_followers():
+def list_following():
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 	db_path = os.path.join(BASE_DIR, "project.db")
 	conn = sqlite3.connect(db_path)
 	conn.text_factory = str
 	c=conn.cursor()
 	t=(session['userID'],)
- 	li=c.execute("SELECT name from login where id IN (SELECT follower FROM follow where following=?)",t)
+ 	li=c.execute("SELECT name,id from login where id IN (SELECT following FROM follow where follower=?)",t)
 	li=c.fetchall()
 	conn.close()
 	return li
-#till now sivangi 
+
+def list_follower(id):
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	c=conn.cursor()
+	t=(id,)
+ 	li=c.execute("SELECT name,id from login where id IN (SELECT follower FROM follow where following=?)",t)
+	li=c.fetchall()
+	conn.close()
+	return li 
 	
 def insert_login(id,name,password,type,lab):
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -144,29 +187,35 @@ def update_login(id,name,type,password,native,dob):
 	#print [l for l in li]
 
 
+@app.route('/insert_post',methods=['POST'])
+def insert_post():
+	if request.method=='POST' :
+		researcharea=request.form['research_area']
+		lab_id=request.form.get('lab')
+		prof_id=request.form.get('prof')
+		post_text=request.form.get('post_content')
+		BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+		db_path = os.path.join(BASE_DIR, "project.db")
+		conn = sqlite3.connect(db_path)
+	 	conn.text_factory = str
+		if session['type']=="professor":
+			prof_id=session['userID']
+			student_id=""
+			post_person_id=prof_id
+		else:
+			post_person_id=session['userID']
+			student_id=session['userID']
+		t =(student_id,researcharea,lab_id,prof_id,post_text,datetime.now(),post_person_id,0)
+		c=conn.cursor()
+		try :
+			c.execute("INSERT into post (student_id,researcharea,lab,prof_id,post_text,time,post_person_id,vote_count) values(?,?,?,?,?,?,?,?) ", t )
+			conn.commit()
+			conn.close()
+			return redirect(url_for('index'))
+		except sqlite3.IntegrityError:
+			conn.close()
+			return "Post can't be inserted "
 
-def insert_post(student_id,researcharea,lab_id,prof_id,post_text):
-	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-	db_path = os.path.join(BASE_DIR, "project.db")
-	conn = sqlite3.connect(db_path)
- 	conn = sqlite3.connect("project.db")
-	conn.text_factory = str
-	if session['type']=="professor":
-		prof_id=student_id
-		student_id=""
-		post_person_id=prof_id
-	else:
-		post_person_id=prof_id
-	t =(student_id,researcharea,lab_id,prof_id,post_text,datetime.datetime.now(),post_person_id)
-	c=conn.cursor()
-	try :
-		c.execute("INSERT into post (student_id,researcharea,lab,prof_id,post_text,time,post_person_id) values(?,?,?,?,?,?,?) ", t )
-		conn.commit()
-		conn.close()
-		return True
-	except sqlite3.IntegrityError:
-		conn.close()
-		return "Post cann't be inserted "
 
 def insert_follow(id2,id1):
  	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -204,22 +253,31 @@ def check_user(id,password):
 		return True
 	conn.close()
 
-
-def show_post(id):
+def show_post():
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 	db_path = os.path.join(BASE_DIR, "project.db")
 	conn = sqlite3.connect(db_path)
 	conn.text_factory = str
-	conn.text_factory = str
-	t=(id,id,)
+	t=(session['userID'],)
 	c=conn.cursor()
-	# li=c.execute("SELECT following FROM follow WHERE follower = ? ", t )
-	# li=c.fetchall()
-	# # t1=(li,)
  	li=c.execute("SELECT * From post where post_person_id in (SELECT following FROM follow WHERE follower = ?) ORDER BY time desc",t)
 	li=c.fetchall()
-	print li
 	conn.close()
+	return li
+
+
+def show_timeline(id):
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	t=(id,)
+	c=conn.cursor()
+ 	li=c.execute("SELECT * From post where post_person_id = ? ORDER BY time desc",t)
+	li=c.fetchall()
+	conn.close()
+	return li
+
 
 def list_lab():
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -227,7 +285,7 @@ def list_lab():
 	conn = sqlite3.connect(db_path)
 	conn.text_factory = str
 	c=conn.cursor()
- 	li=c.execute("SELECT DISTINCT lab FROM login")
+ 	li=c.execute("SELECT DISTINCT lab FROM login where lab!=None")
 	li=c.fetchall()
 	print li
 	conn.close()
@@ -280,24 +338,21 @@ def most_publications_labs():
 	print li
 	conn.close()
 
-def timeline_qurrey(id):
+
+
+def increase_vote_count(id,post_id):
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 	db_path = os.path.join(BASE_DIR, "project.db")
 	conn = sqlite3.connect(db_path)
 	conn.text_factory = str
 	c=conn.cursor()
-	t=(id,)
-	l=c.execute("SELECT * login where id=?",t)
-	l=c.fetchall()
-	type=l[0]
-	if type=="student":
- 		li=c.execute("SELECT * post where student_id=? ",t)
- 	elif type=="professor":
- 		li=c.execute("SELECT * post where prof_id=? ",t)
-	li=c.fetchall()
-	print li
-	conn.close()	
-
+	t=(post_id,)
+	t1=(post_id,id)
+	c.execute("UPDATE post set vote_count=vote_count+1 where post_id=?",t)
+	c.execute("INSERT into vote_table (post_id,voted_person_id) values (?,?) ", t1 )
+	conn.commit()
+	conn.close()
+	
 
 
 @app.route('/registrationNext',methods=['POST'])
