@@ -10,11 +10,12 @@
       <div class="w3-card w3-round w3-white" style="border-radius: 20px;">
         <div class="w3-container w3-white" style="border-radius: 20px;">
          <h4 class="w3-center">
-         <b><span style="color:#E040FB;">Jane Doe</span></b></h4>
+          <br>
+         <b><span style="color:#E040FB;">{{name}}</span></b></h4>
          <hr>
-         <p><i class="fa fa-pencil fa-fw w3-margin-right"></i> Designer, UI</p>
-         <p><i class="fa fa-home fa-fw w3-margin-right"></i> London, UK</p>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right"></i> April 1, 1988</p>
+         <p><i class="fa fa-pencil fa-fw w3-margin-right"></i> {{post}}</p>
+         <p><i class="fa fa-home fa-fw w3-margin-right"></i> {{place}}</p>
+         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right"></i> {{dob}}</p>
          <div class="w3-row w3-opacity">
               <button class="w3-button w3-block  w3-section ulul" title="Accept" style="border-radius: 20px; color:black;">Update Profile</button>
           </div>
@@ -24,10 +25,10 @@
 
       <div class="w3-card w3-round w3-white w3-center" style="border-radius: 20px;">
         <div class="w3-container">
-          <p>Follow:</p>
-          <span>Jane Doe</span>
+          <span>{{id2}}</span>
           <div class="w3-row w3-opacity">
-              <button class="w3-button w3-block  w3-section ulul" title="Accept" style="border-radius: 20px;"><i class="fa fa-check"></i></button>
+            <form class="form1" action="/follow/{{id2}}">
+              <button class="w3-button w3-block  w3-section" title="Accept" id="follow" style="border-radius: 20px;">Follow <i class="fa fa-check"></i></button></form>
           </div>
         </div>
       </div>
@@ -83,7 +84,7 @@
 </script>
 {% endfor %}
     <!-- End Middle Column -->
-    </div>
+     </div>
     
     <!-- Right Column -->
     <div class="w3-col m2">
@@ -91,8 +92,10 @@
         <div class="w3-white" style="border-radius: 20px;">
           <button onclick="myFunction('Demo1')" class="w3-button w3-block ulul w3-left-align" style="border-radius: 20px;"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Followers</button>
           <div id="Demo1" class="w3-hide w3-container">
+            <button name='check' id="check" onclick="fun('check')" value="kshitij.paliwal@students.iiit.ac.in">kshitij</button>
+
              {% for i in range(4) %}
-            <a href="/index">Follower{{i}}</a	><br>
+            <a href="/index">Follower{{i}}</a ><br>
             {% endfor %}
           </div>
         </div>      
@@ -119,6 +122,17 @@ function myFunction(id) {
         x.previousElementSibling.className = 
         x.previousElementSibling.className.replace(" w3-theme-d1", "");
     }
+}
+function fun(id){
+  var x = document.getElementById(id);
+  var y="/about/"+x.value;
+  window.location = y;
+}
+window.onload=function load(){
+  if( {{followed}} == 1){
+        var x=document.getElementById("follow");
+        x.style.background="linear-gradient(to right, #9C27B0, #E040FB)";
+      }
 }
 </script>
 {% endblock %}

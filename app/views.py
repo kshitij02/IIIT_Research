@@ -27,61 +27,86 @@ app.secret_key = "Ramukaka"
 @app.route('/index')
 def index():
 	if session['user_logged_in']==True:
-		return render_template('index.html')
-	return	redirect(url_for('login'))
-@app.route('/post')
-def post():
-	if session['user_logged_in']==True:
-		return render_template('post.html')
+		lis=list_followers()
+		return render_template('index.html',id=session['userID'],lis=lis)
 	return	redirect(url_for('login'))
 
 @app.route('/timeline')
 def timeline():
 	if session['user_logged_in']==True:
-		return render_template('timeline.html')
+		return render_template('timeline.html',id=session['userID'])
 	return	redirect(url_for('login'))
 	
 @app.route('/lab')
 def lab():
 	if session['user_logged_in']==True:
-		return render_template('lab.html')
+		return render_template('lab.html',id=session['userID'])
 	return	redirect(url_for('login'))
 
-@app.route('/about')
-def about():
+@app.route('/about/<id>')
+def about(id):
 	if session['user_logged_in']==True:
-		return render_template('about.html')
+		BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+		db_path = os.path.join(BASE_DIR, "project.db")
+		conn = sqlite3.connect(db_path)
+		conn.text_factory = str
+		c=conn.cursor()
+		names=(id,)
+		t=(session['userID'],id,)
+		li=c.execute("SELECT * FROM follow WHERE follower = ? and following=?" , t )
+		li=c.fetchall()
+		followed=1
+		if len(li) == 0 :
+			followed=0
+		lin=c.execute("SELECT name,type,native,dob,id FROM login WHERE id= ?",names)
+		lin=c.fetchall()
+		for li in lin:
+			return render_template('about.html',id=session['userID'],name=li[0], post=li[1],place=li[2],dob=li[3],id2=li[4],followed=followed)
 	return	redirect(url_for('login'))
 
 
 @app.route('/trending')
 def trending():
 	if session['user_logged_in']==True:
-		return render_template('trending.html')
+		return render_template('trending.html',id=session['userID'])
 	return	redirect(url_for('login'))
 
 
 @app.route('/professor')
 def professor():
 	if session['user_logged_in']==True:
-		return render_template('professor.html')
+		return render_template('professor.html',id=session['userID'])
 	return	redirect(url_for('login'))
 
 @app.route('/')	
 @app.route('/login')
 def login():
 	if session['user_logged_in']==True:
-		return redirect(url_for('index'))
+		return redirect(url_for('index',id=session['userID']))
 	return render_template('login.html')
 
 @app.route('/registration')
 def registration():
 	return render_template('registration.html')
 
-@app.route('/follow')
-def follow():
-	return insert_follow(email_1,email_2)
+@app.route('/follow/<id2>')
+def follow(id2):
+	return insert_follow(id2=id2,id1=session['userID'])
 
+
+def list_followers():
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	c=conn.cursor()
+	t=(session['userID'],)
+ 	li=c.execute("SELECT name from login where id IN (SELECT follower FROM follow where following=?)",t)
+	li=c.fetchall()
+	conn.close()
+	return li
+#till now sivangi 
+	
 def insert_login(id,name,password,type,lab):
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 	db_path = os.path.join(BASE_DIR, "project.db")
@@ -143,23 +168,24 @@ def insert_post(student_id,researcharea,lab_id,prof_id,post_text):
 		conn.close()
 		return "Post cann't be inserted "
 
-def insert_follow(student_id,id_2):
+def insert_follow(id2,id1):
  	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 	db_path = os.path.join(BASE_DIR, "project.db")
 	conn = sqlite3.connect(db_path)
  	conn.text_factory = str
-	t =(student_id,id_2)
-	l=(student_id,)
+	t =(id2,id1)
+	l=(id2,)
 	c=conn.cursor()
+	print id1,id2
 	try :
 		c.execute("INSERT into follow (following,follower) values(?,?) ", t )
 		c.execute("UPDATE login set no_of_followers=no_of_followers+1 where id=?",l)
 		conn.commit()
 		conn.close()
-		return True
+		return redirect(url_for('about',id=id2))
 	except sqlite3.IntegrityError:
 		conn.close()
-		return "already exists"
+		return redirect(url_for('about',id=id2))
 
 
 def check_user(id,password):
@@ -312,7 +338,7 @@ def loginNext():
 			session['user_logged_in']=True
 			session['userID']=id
 			session['type']=type_find()
-			return redirect(url_for('index'))
+			return redirect(url_for('index',id=session['userID']))
 		else :
 			# flash( "Invaild credentials!")
 			return redirect(url_for('login'))			

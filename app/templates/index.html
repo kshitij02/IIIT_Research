@@ -7,8 +7,8 @@
         <div class="w3-white" style="border-radius: 20px;">
           <button onclick="myFunction('Demo1')" class="w3-button w3-block ulul w3-left-align" style="border-radius: 20px;"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Followers</button>
           <div id="Demo1" class="w3-hide w3-container">
-             {% for i in range(4) %}
-            <a href="/index">Follower{{i}}</a ><br>
+             {% for i in lis %}
+            <a href="/index">{{i[0]}}</a ><br>
             {% endfor %}
           </div>
         </div>  
@@ -27,44 +27,32 @@
       </div>
     </div>
     <div class="row">
-      <div class='col-2' style="background-color: white;margin-left:15px;">
-        <div class="dropdown">
-            <button class="heart" type="button" data-toggle="dropdown" style="margin: 1px; border-style: none; border-radius: 20px; background: linear-gradient(to right, #9C27B0, #E040FB);
-            color: white;">Tag Prof</button>
-            <div class="dropdown-menu" style="padding-left: 5px; ">
-              <button class="list_button" onclick="sendToDisplay(this,'tg_prof');">A.K. Das</button><br>
-              <button class="list_button" onclick="sendToDisplay(this,'tg_prof');">Choppella</button><br>
-              <button class="list_button" onclick="sendToDisplay(this,'tg_prof');">Pudi</button><br>
-            </div>
-          </div>
+      <div class='col' style="background-color: white;margin-left:12px; text-align: center;">
+          <select class="sel" required name="type" style="width: 50%; padding: 10px; margin: 5px; border-style: none; border-radius: 20px; color: grey;">
+                  <option value='default' selected>Tag Prof</option>
+                  <option><button class="list_button">A.K. Das</button></option>
+                  <option><button class="list_button">Choppella</button></option>
+                  <option><button class="list_button">Pudi</button></option>
+            </select><br>
       </div>
-      <textarea class='col tag_area' id='tg_prof' rows='1'></textarea>
-    </div>
-    <div class="row">
-      <div class='col-2' style="background-color: white;margin-left:15px;">
-        <div class="dropdown" >
-            <button class="heart" type="button" data-toggle="dropdown" style="margin: 1px; border-style: none; border-radius: 20px; background: linear-gradient(to right, #9C27B0, #E040FB);color: white;">Tag Lab</button>
-            <div class="dropdown-menu" style="padding-left: 5px; ">
-              <button class="list_button" onclick="sendToDisplay(this,'tg_lab');">CVIT</button><br>
-              <button class="list_button" onclick="sendToDisplay(this,'tg_lab');">SERC</button><br>
-              <button class="list_button" onclick="sendToDisplay(this,'tg_lab');">LSTM</button><br>
-            </div>
-          </div>
+      <div class='col' style="background-color: white;margin-right:12px; text-align: center;">
+        <select class="sel" required name="type" style="width: 50%; padding: 10px; margin: 5px; border-style: none; border-radius: 20px; color: grey;">
+                  <option value='default' selected>Tag Lab</option>
+                  <option><button class="list_button">CVIT</button></option>
+                  <option><button class="list_button">SERC</button></option>
+                  <option><button class="list_button">LSTM</button></option>
+            </select><br>
       </div>
-      <textarea class='col tag_area' id='tg_lab' rows='1'></textarea>
     </div>
     <div class="row">
       <textarea id='post_content' rows='4' placeholder="What's New?"></textarea>
     </div>
   </div>
   <script type="text/javascript">
-    function sendToDisplay(element,txt_area) {
-      document.getElementById(txt_area).value = element.innerHTML;
-    }
     function clear_post() {
-      document.getElementById('tg_prof').value = '';
-      document.getElementById('tg_lab').value = '';
       document.getElementById('post_content').value = '';
+      document.getElementsByName('type')[0].value = 'default';
+      document.getElementsByName('type')[1].value = 'default';
     }
   </script>
 {% for i in range(4) %}
