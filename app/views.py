@@ -56,7 +56,9 @@ def index():
 	if session['user_logged_in']==True:
 		lis=list_following()
 		posts=show_post()
-		return render_template('index.html',id=session['userID'],lis=lis,posts=posts)
+		lab_list = list_lab()
+		all_prof=all_professor()
+		return render_template('index.html',id=session['userID'],lis=lis,posts=posts,lab_list = lab_list,all_prof=all_prof)
 	return	redirect(url_for('login'))
 
 @app.route('/timeline')
@@ -68,6 +70,9 @@ def timeline():
 		return render_template('timeline.html',id=session['userID'],posts=posts)
 	return	redirect(url_for('login'))
 	
+
+
+
 @app.route('/lab')
 def lab():
 	if session['user_logged_in']==True:
@@ -109,9 +114,18 @@ def about_lab(lab_name):
 
 @app.route('/trending')
 def trending():
-	if session['user_logged_in']==True:
-		return render_template('trending.html',id=session['userID'])
-	return	redirect(url_for('login'))
+    if session['user_logged_in']==True:
+        profs=most_followed_prof()
+        
+        posts=most_voted_post()
+        labs=most_publications_labs()
+        # return str(len(labs))
+        return render_template('trending.html',id=session['userID'],posts=posts,profs=profs,labs=labs)
+    return    redirect(url_for('login'))
+# def trending():
+# 	if session['user_logged_in']==True:
+# 		return render_template('trending.html',id=session['userID'])
+# 	return	redirect(url_for('login'))
 
 
 @app.route('/professor')
@@ -320,10 +334,11 @@ def most_voted_post():
 	conn = sqlite3.connect(db_path)
 	conn.text_factory = str
 	c=conn.cursor()
- 	li=c.execute("SELECT * FROM post ORDER BY vote DESC limit 10")
+ 	li=c.execute("SELECT * FROM post ORDER BY vote_count DESC limit 10")
 	li=c.fetchall()
-	print li
+	
 	conn.close()
+	return li
 
 
 def most_followed_prof():
@@ -332,11 +347,10 @@ def most_followed_prof():
 	conn = sqlite3.connect(db_path)
 	conn.text_factory = str
 	c=conn.cursor()
- 	li=c.execute("SELECT * FROM login ORDER BY no_of_followers DESC limit 10")
+ 	li=c.execute("SELECT name,id,no_of_followers FROM login where type='professor' ORDER BY no_of_followers DESC limit 10")
 	li=c.fetchall()
-	print li
 	conn.close()
-
+	return li
 
 def most_publications_labs():
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -346,9 +360,8 @@ def most_publications_labs():
 	c=conn.cursor()
  	li=c.execute("SELECT lab ,COUNT(*) FROM post GROUP BY lab ORDER BY COUNT(*) DESC limit 10  ")
 	li=c.fetchall()
-	print li
 	conn.close()
-
+	return li
 
 @app.route('/vote_count_increment/<post_id>')
 def vote_count_increment(post_id):

@@ -65,12 +65,12 @@
     {% for post in posts %}
   <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;border-radius:50px;margin:15px ">
   <h3 style="text-align:center;">Research Area:{{post[1]}}</h3>
-  <p>
+  <p class="text-center">
     Lab:{{post[2]}}<br>
     Professor:{{post[4]}}<br>
     Student:{{post[3]}}<br>
   </p>
-  <p><b>About</b><br>{{post[7]}}</p>
+  <p class="text-center"><b>About</b><br>{{post[7]}}</p>
     <p>
         <button id="{{post[0]}}" class="heart">Vote
           <span class="glyphicon glyphicon-heart"></span></button> {{post[6]}}

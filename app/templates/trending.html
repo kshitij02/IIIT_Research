@@ -3,7 +3,7 @@
 <style type="text/css">
   .sidenav {
     height: 100%; /* Full-height: remove this if you want "auto" height */
-    width: 5000px; /* Set the width of the sidebar */
+    width: 500px; /* Set the width of the sidebar */
     position: fixed; /* Fixed Sidebar (stay in place on scroll) */
     z-index: 1; /* Stay on top */
     top: 10; /* Stay at the top */
@@ -17,9 +17,9 @@
 <div class="row">
 <div class="sidenav">
 <div class="col-lg-3">
-<div><h2><a href=#post>Most Voted Posts</a></h2></div>
-<div><h2><a href=#prof>Most Followed Professors </a></h2></div>
-<div><h2><a href=#lab>Most Publication's By Labs</a></h2></div>
+<div><h3><a href=#post>Most Voted Posts</a></h3></div>
+<div><h3><a href=#prof>Most Followed Professors </a></h3></div>
+<div><h3><a href=#lab>Most Publication's By Labs</a></h3></div>
 
 </div>
 </div>
@@ -31,24 +31,24 @@
     </h1>
 
   <div id="post">
-    {% for i in range(10) %}
-<div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;border-radius:50px">
-  <h3 style="text-align:center;">Research Area:{{i}}</h3>
-  <p>
-    Lab:{{i}}<br>
-    Professor:{{i}}<br>
-    Student:{{i}}<br>
+    {% for post in posts %}
+<div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;border-radius:50px;margin:15px">
+  <h3 style="text-align:center;"class="text-center">Research Area:{{post[1]}}</h3>
+  <p class="text-center">
+    Lab:{{post[2]}}<br>
+    Professor:{{post[4]}}<br>
+    Student:{{post[3]}}<br>
   </p>
-  <p><b>About</b><br>Parallax scrolling is a web site trend where the background content is moved at a different speed than the foreground content while scrolling. Nascetur per nec posuere turpis, lectus nec libero turpis nunc at, sed posuere mollis ullamcorper libero ante lectus, blandit pellentesque a, magna turpis est sapien duis blandit dignissim. Viverra interdum mi magna mi, morbi sociis. Condimentum dui ipsum consequat morbi, curabitur aliquam pede, nullam vitae eu placerat eget et vehicula. Varius quisque non molestie dolor, nunc nisl dapibus vestibulum at, sodales tincidunt mauris ullamcorper, dapibus pulvinar, in in neque risus odio. Accumsan fringilla vulputate at quibusdam sociis eleifend, aenean maecenas vulputate, non id vehicula lorem mattis, ratione interdum sociis ornare. Suscipit proin magna cras vel, non sit platea sit, maecenas ante augue etiam maecenas, porta porttitor placerat leo.</p>
-    <p>
-        <button id="{{i}}" class="heart">Vote
-          <span class="glyphicon glyphicon-heart"></span></button>
+  <p class="text-center"><b>About</b><br>{{post[7]}}</p>
+    <p class="text-center">
+        <button id="{{post[0]}}" class="heart">Vote
+          <span class="glyphicon glyphicon-heart"></span></button> {{post[6]}}
       </p>
-</div><br><br>
+</div><br>
 <script type="text/javascript">
     $(document).ready(function($){
-    $('#{{i}}').on("click", function(){
-      const element = document.getElementById('{{i}}')
+    $('#{{post[0]}}').on("click", function(){
+      const element = document.getElementById('{{post[0]}}')
       const color = element.style.color
       // console.log(color)
       if(color=="red")
@@ -67,11 +67,12 @@
     <h1 style="text-align: center;">
     Most Followed Professor's    
     </h1>
-    {% for i in range(10)  %}
+    {% for prof in profs  %}
+
     <div style="color: #777;background-color:white;text-align:center;padding:25px 40px;text-align: justify;border-radius:50px">
-    <div ><a href=/professor>Professor {{i}} </a>
+    <div class="text-center"><a href="/about/{{prof[1]}}">{{prof[0]}}</a>
       <br>
-      <h6>Followers:{{i}}</h6>
+      <h6>Followers:{{prof[2]}}</h6>
     </div>
     </div>
     <br>
@@ -81,11 +82,11 @@
     <h1 style="text-align: center;">
     Most Publication's By Lab's    
     </h1>
-    {% for i in range(10)  %}
+    {% for lab in labs %}
     <div style="color: #777;background-color:white;text-align:center;padding:25px 40px;text-align: justify;border-radius:50px">
-    <div ><a href=/professor>Lab {{i}} </a>
+    <div class="text-center"><a href=/about_lab/{{lab[0]}}>Lab: {{lab[0]}} </a>
       <br>
-      <h6>Number of publications :{{i}}</h6>
+      <h6>Number of publications :{{lab[1]}}</h6>
     </div>
     </div>
     <br>

@@ -1,11 +1,12 @@
 {% extends 'header.html' %}
-
 {% block body %}  
-
-{% for info in li %}
- 	<a href="/about/{{info[0]}}">{{info[1]}} {{info[3]}}</a>
- 	
+<div class="container">
+{% for info in li  %}
+<div style="color: #777;background-color:white;text-align:center;padding:25px 40px;text-align: justify;border-radius:50px;margin-right:20%; margin-left: 20%;">
+<div align="center"><a href="/about/{{info[0]}}">{{info[3]}} : {{info[1]}}  ({{info[0]}})</a></div>
+</div>
+<br>
 {% endfor %}
-
+</div>
 
 {% endblock %}

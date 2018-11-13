@@ -35,17 +35,23 @@
       <div class='col' style="background-color: white;text-align: center;">
           <select class="sel" id="prof" required name="prof" style="width: 50%; padding: 10px; margin: 5px; border-style: none; border-radius: 20px; color: grey;">
                   <option value='default' selected>Tag Prof</option>
-                  {% for i in range(4) %}
-                  <option value="ram{{i}}">ram{{i}}</option>
+                  {% for l in all_prof  %}
+                    {% if l[0] != '' %}
+                  <option value="{{l[1]}}">{{l[0]}}</option>
+
+                    {% endif %}
                   {% endfor %}
             </select><br>
       </div>
       <div class='col' style="background-color: white;margin-right:12px; text-align: center;">
         <select class="sel" id="lab" required name="lab" style="width: 50%; padding: 10px; margin: 5px; border-style: none; border-radius: 20px; color: grey;">
                   <option value='default' selected>Tag Lab</option>
-                  <option value="cvit">CVIT</option>
-                  <option value="serc">SERC</option>
-                  <option value="lstm">LSTM</option>
+                  {% for l in lab_list  %}
+                    {% if l[0] != '' %}
+                  <option value="{{l[0]}}">{{l[0]}}</option>
+
+                    {% endif %}
+                  {% endfor %}
             </select><br>
       </div>
     </div>
@@ -64,13 +70,13 @@
 {% for post in posts %}
   <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;border-radius:50px;margin:15px ">
   <h3 style="text-align:center;">Research Area:{{post[1]}}</h3>
-  <p>
+  <p class="text-center">
     Lab:{{post[2]}}<br>
     Professor:{{post[4]}}<br>
     Student:{{post[3]}}<br>
   </p>
-  <p><b>About</b><br>{{post[7]}}</p>
-    <p>
+  <p class="text-center"><b>About</b><br>{{post[7]}}</p>
+    <p >
         <a href="vote_count_increment/{{post[0]}}"><button id="{{post[0]}}" class="heart">Vote
           <span class="glyphicon glyphicon-heart"></span></button> {{post[6]}}</a>
       </p>
