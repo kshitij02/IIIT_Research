@@ -5,18 +5,27 @@
   <div class="main">
     <p class="sign" align="center">Sign up</p>
     <form class="form1" action="/registrationNext" method="POST">
-      <input class="un " type="text" align="center" placeholder="Username" name="id">
-      <input class="pass" type="password" align="center" placeholder="Password" name="password">
-      <input class="un" type="name" align="center" placeholder="Name" name="name">
-      <input class="un" type="type" align="center" placeholder="Type" name="type">
-      
-      <input type="submit" class="submit" align="center" value="Sign up"></input>
-      <br><br><br>
-      <a class="submit" align="center" href="{{ url_for('login') }}">Sign in</a>
-            
-                
+      <input class="un " type="text" align="center" placeholder="Username" name="id"><br>
+      <input class="pass" type="password" align="center" placeholder="Password" name="password"><br>
+      <input class="un" type="name" align="center" placeholder="Name" name="name"><br>
+      <select required class='un' onblur="enter_lab();" name="type">
+          <option value='default' selected style="color: rgb(38, 50, 56);">Student or Professor?</option>
+          <option value='student' >Student</option>
+          <option value='professor' >Professor</option>
+      </select><br>
+      <input class='un' type='text' style="display: none" name="lab" placeholder="Lab Name"><br>
+      <button type="submit" class="submit" align="center">Sign up</button><br>
+      <div style="margin:20px;"><a class="submit" align="center" href="{{ url_for('login') }}">Sign in</a></div>   
+    </form>
     </div>
-
+    <script type="text/javascript">
+        function enter_lab() {
+          if(document.getElementsByName('type')[0].value == 'professor')
+            document.getElementsByName('lab')[0].style.display = 'inline';
+          if(document.getElementsByName('type')[0].value == 'student')
+            document.getElementsByName('lab')[0].style.display = 'none';
+        }
+    </script>
 {% endblock %}
 
 

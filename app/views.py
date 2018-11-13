@@ -82,15 +82,15 @@ def registration():
 def follow():
 	return insert_follow(email_1,email_2)
 
-def insert_login(id,name,password,type):
+def insert_login(id,name,password,type,lab):
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 	db_path = os.path.join(BASE_DIR, "project.db")
 	conn = sqlite3.connect(db_path)
 	conn.text_factory = str
-	t =(id,name,password,type)
+	t =(id,name,password,type,lab)
 	c=conn.cursor()
 	try :
-		c.execute("INSERT into login (id,name,password,type) values(?,?,?,?) ", t )
+		c.execute("INSERT into login (id,name,password,type,lab) values(?,?,?,?,?) ", t )
 		conn.commit()
 		conn.close()
 		return True
@@ -190,7 +190,7 @@ def show_post(id):
 	# li=c.execute("SELECT following FROM follow WHERE follower = ? ", t )
 	# li=c.fetchall()
 	# # t1=(li,)
- 	li=c.execute("SELECT * From post where student_id in (SELECT following FROM follow WHERE follower = ?) or prof_id in (SELECT following FROM follow WHERE follower = ?) ORDER BY time desc",t)
+ 	li=c.execute("SELECT * From post where post_person_id in (SELECT following FROM follow WHERE follower = ?) ORDER BY time desc",t)
 	li=c.fetchall()
 	print li
 	conn.close()
@@ -281,7 +281,11 @@ def registrationNext():
 		name=request.form["name"]
 		password=request.form["password"]
 		type=request.form["type"]
-		if insert_login(id,name,password,type)==True:
+		if type=="student":
+			lab=""
+		elif type=="professor":
+			lab=request.form["lab"]
+		if insert_login(id,name,password,type,lab)==True:
 			return redirect(url_for('login'))
 		# flash("User id already Exits!!")
 		return redirect(url_for('registration'))
