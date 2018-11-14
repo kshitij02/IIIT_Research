@@ -55,15 +55,10 @@ def file(filename):
 
 @app.route('/show_file/<filename>')
 def file_show(filename):
-	# t=(filename,)
-	# BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-	# db_path = os.path.join(BASE_DIR, "project.db")
-	# conn = sqlite3.connect(db_path)	
-	# conn.text_factory = str
-	# c=conn.cursor()
-	# li=c.execute("SELECT file_present from post where post_id=?",t)
- #    li=c.fetchall()
-    return file(filename)
+	if session['user_logged_in']==True:
+	    return file(filename)
+	return redirect(url_for('login'))
+
 
 @app.route('/insert_post',methods=['POST'])
 def insert_post():
@@ -246,7 +241,7 @@ def trending():
         	check.append(post)
         	check.append(liked(post[0]))
         	vote_result.append(check)
-    return render_template('trending.html',id=session['userID'],vote_result=vote_result,profs=profs,labs=labs)
+    	return render_template('trending.html',id=session['userID'],vote_result=vote_result,profs=profs,labs=labs)
     return    redirect(url_for('login'))
 # def trending():
 # 	if session['user_logged_in']==True:
@@ -274,7 +269,9 @@ def registration():
 
 @app.route('/follow/<id2>')
 def follow(id2):
-	return insert_follow(id2=id2,id1=session['userID'])
+	if session['user_logged_in']==True:
+		return insert_follow(id2=id2,id1=session['userID'])
+	return render_template('login.html')
 
 
 def list_following():
@@ -396,7 +393,7 @@ def show_timeline(id):
 	li=c.fetchall()
 	conn.close()
 	return li
-	
+
 @app.errorhandler(404)
 def http_404_handler(error):
     return render_template('404.html')
@@ -462,7 +459,9 @@ def most_publications_labs():
 
 @app.route('/vote_count_increment/<post_id>')
 def vote_count_increment(post_id):
-	increase_vote_count(session['userID'],post_id)
+	if session['user_logged_in']==True:
+		increase_vote_count(session['userID'],post_id)
+		return redirect(url_for('login'))
 	return redirect(url_for('login'))
 
 
