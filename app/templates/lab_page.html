@@ -1,0 +1,73 @@
+{% extends 'header.html' %}
+{% block body %}
+<!-- Page Container -->
+<div class=" w3-content" style="max-width:1800px;">    
+  <!-- The Grid -->
+  <div class="w3-row w3" style="margin-top:15px">
+    <!-- Left Column -->
+    <div class="w3-col m3 ">
+      <!-- Profile -->
+      <div class="w3-card w3-round w3-white" style="border-radius: 20px;">
+        <div class="w3-container w3-white" style="border-radius: 20px;">
+         <h4 class="w3-center">
+          <br>
+         <b><span style="color:#E040FB;">{{lab[1]}}</span></b></h4>
+         <hr>
+        </div>
+      </div>
+      <br>
+
+      <div class="w3-card w3-round w3-white w3-center" style="border-radius: 20px;">
+        <div class="w3-container">
+          <span>{{lab[0]}}</span>
+        </div>
+      </div>
+      <br>
+      <br>
+    </div>
+    
+    <!-- Middle Column -->
+    <div class="w3-col m7">
+    <h1 style="text-align: center;">ABOUT</h2></h1>
+    <p style="margin-left: 10px; margin-right: 10px;">
+      {{lab[2]}}
+    </p>
+    <!-- End Middle Column -->
+     </div>
+    
+    <!-- Right Column -->
+    <div class="w3-col m2">
+      <div class="w3-card w3-round" style="border-radius: 20px;">
+        <div class="w3-white" style="border-radius: 20px;">
+          <button onclick="myFunction('Demo1')" class="w3-button w3-block ulul w3-left-align" style="border-radius: 20px;"><i class="fa fa-circle-o-notch fa-fw w3-margin-right"></i> Professors</button>
+          <div id="Demo1" class="w3-hide w3-container">
+             {% for i in prof %}
+            <a href="/about/{{i[1]}}">{{i[0]}}</a ><br>
+
+            {% endfor %}
+          </div>
+        </div>      
+      </div>
+      <br>
+    <!-- End Right Column -->
+    </div>
+    
+  <!-- End Grid -->
+  </div>
+  
+<!-- End Page Container -->
+</div>
+<script>
+function myFunction(id) {
+    var x = document.getElementById(id);
+    if (x.className.indexOf("w3-show") == -1) {
+        x.className += " w3-show";
+        x.previousElementSibling.className += " w3-theme-d1";
+    } else { 
+        x.className = x.className.replace("w3-show", "");
+        x.previousElementSibling.className = 
+        x.previousElementSibling.className.replace(" w3-theme-d1", "");
+    }
+}
+</script>
+{% endblock %}

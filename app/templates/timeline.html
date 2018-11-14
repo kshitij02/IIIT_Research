@@ -107,19 +107,27 @@ h2{
 	background:linear-gradient(to right, #9C27B0, #E040FB);
 }
 </style>
-<section id="timeline">
+{% if session['type'][0]=="professor" %}
+ <H1> <p class="text-center"><b>STUDENTS UNDER ME:</b></H1><br></p>
+  {% endif %}
+<section id="timeline">    
 {% for l in posts %}
 <article>
     <div class="inner">
       <span class="date">
-        <span class="day">30<sup>th</sup></span>
-        <span class="month">Jan</span>
-        <span class="year">2014</span>
+        <span class="day" name={{l[0]}} ></span>
+        <span class="month" name={{l[0]}} ></span>
+        <span class="year" name={{l[0]}} ></span>
       </span>
       <h2 class="text-center">Research Area:{{l[1]}}</h2>
-      <p class="text-center">
+      <p class="text-center" style="box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14);">
       Lab:{{l[2]}}<br>
+      {% if session['type'][0]=="professor" %}
+      Student:{{l[3]}}
+      {% else %}
       Professor:{{l[4]}}<br>
+      {% endif %}
+
       {{l[7]}}
       <br>Vote Count:{{l[6]}}
     </div>
@@ -127,5 +135,15 @@ h2{
   {% endfor %}
   
 </section>
-
+{% for l in posts %}
+  <script type="text/javascript">
+      var str = '{{l[5] | safe }}';
+      var dat = str.split(' ');
+      var dat_ls = dat[0].split('-');
+      var mon = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      document.getElementsByName('{{l[0] | safe}}')[0].innerHTML = dat_ls[2] + '<sup>th</sup>';
+      document.getElementsByName('{{l[0] | safe}}')[1].innerHTML = mon[dat_ls[1]-1];
+      document.getElementsByName('{{l[0] | safe}}')[2].innerHTML = dat_ls[0];
+  </script>
+{% endfor %}
 {% endblock %}

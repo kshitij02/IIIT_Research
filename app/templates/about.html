@@ -17,7 +17,11 @@
          <p><i class="fa fa-home fa-fw w3-margin-right"></i> {{li[2]}}</p>
          <p><i class="fa fa-birthday-cake fa-fw w3-margin-right"></i> {{li[3]}}</p>
          <div class="w3-row w3-opacity">
-              <button class="w3-button w3-block  w3-section ulul" title="Accept" style="border-radius: 20px; color:black;">Update Profile</button>
+          {% if id==li[4] %}
+              <form class="form1" action="/update">
+              <button class="w3-button w3-block  w3-section ulul " id="update" title="Accept" style="border-radius: 20px; color:black;">Update Profile</button>
+           </form>
+           {% endif %}
           </div>
         </div>
       </div>
@@ -25,26 +29,17 @@
 
       <div class="w3-card w3-round w3-white w3-center" style="border-radius: 20px;">
         <div class="w3-container">
-          <span>{{li[4]}}</span>
+          <a style="color:#E040FB;">Email id : </a><span>{{li[4]}}</span>
           <div class="w3-row w3-opacity">
+            {% if id!=li[4] %}
             <form class="form1" action="/follow/{{li[4]}}">
               <button class="w3-button w3-block  w3-section" title="Accept" id="follow" style="border-radius: 20px;">Follow <i class="fa fa-check"></i></button></form>
+    
+            {% endif %}
           </div>
         </div>
       </div>
       <br>
-      <div class="w3-card w3-round w3-white w3-hide-small" style="border-radius: 20px;">
-        <div class="w3-container">
-          <br>
-          <p style="color:#E040FB;"><b>Interests</b></p>
-          <hr>
-          <p>
-            {% for i in range(4) %}
-            <span >Interest {{i}}</span><br>
-            {% endfor %}
-          </p>
-        </div>
-      </div>
       <br>
       <!-- Accordion -->
       
@@ -63,33 +58,20 @@
     </div>    
     {% endif %}
     {% for post in posts %}
-  <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;border-radius:50px;margin:15px ">
-  <h3 style="text-align:center;">Research Area:{{post[1]}}</h3>
+  <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;border-radius:50px;margin:15px;box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14); ">
+ <h3 style="text-align:center;">Research Area:{{post[1]}}</h3>
   <p class="text-center">
-    Lab:{{post[2]}}<br>
-    Professor:{{post[4]}}<br>
-    Student:{{post[3]}}<br>
+     Lab: <a href="/lab_info/{{post[2]}}">{{post[2]}}</a><br>
+    Professor: <a href="/about/{{post[4]}}">{{post[4]}}</a><br>
   </p>
   <p class="text-center"><b>About</b><br>{{post[7]}}</p>
-    <p>
-        <button id="{{post[0]}}" class="heart">Vote
-          <span class="glyphicon glyphicon-heart"></span></button> {{post[6]}}
+  {% if post[9]=="yes" %}
+  <p class="text-center"><a href="/show_file/{{post[0]}}.pdf"><img class="avatar" src="https://www.zamzar.com/images/filetypes/pdf.png" class="user_image"></a> <a>Download Research Paper</a></p>
+  {% endif %}
+  <p class="text-center">
+          <span class="glyphicon glyphicon-heart" style="color:red;" class="heart"></span> {{post[6]}} votes</a>
       </p>
-</div><br>
-<script type="text/javascript">
-    $(document).ready(function($){
-    $('#{{post[0]}}').on("click", function(){
-      const element = document.getElementById('{{post[0]}}')
-      const color = element.style.color
-      // console.log(color)
-      if(color=="red")
-        $(this).css("color", "black");
-      else
-        $(this).css("color", "red");
-    });
-});
-</script>
-    
+</div><br>    
 {% endfor %}
     <!-- End Middle Column -->
      </div>
