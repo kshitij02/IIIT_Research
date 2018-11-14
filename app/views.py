@@ -102,6 +102,8 @@ def insert_post():
 			conn.close()
 			return "Post can't be inserted "
 
+
+
 @app.route('/lab_info/<name>')
 def lab_info(name):
     if session['user_logged_in']==True:
@@ -113,10 +115,24 @@ def lab_info(name):
         c=conn.cursor()
         li=c.execute("SELECT id,name,native From login where name like ? ",t)
         li=c.fetchall()
+        lab_posts=lab_p(name)
         prof=list_prof(name)
         conn.close()
-        return render_template('lab_page.html',id=session['userID'],lab=li[0],prof=prof)
+        return render_template('lab_page.html',id=session['userID'],lab=li[0],prof=prof,lab_posts=lab_posts)
     return redirect(url_for('login'))
+
+def lab_p(name):
+	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+	db_path = os.path.join(BASE_DIR, "project.db")
+	conn = sqlite3.connect(db_path)
+	conn.text_factory = str
+	t=(name,)
+	c=conn.cursor()
+ 	li=c.execute("SELECT * From post where lab like ? ORDER BY time desc",t)
+	li=c.fetchall()
+	conn.close()
+	return li	
+
 
 @app.route('/index')
 def index():
@@ -559,13 +575,13 @@ def read_search():
         conn.text_factory = str
         t = (search_name,)
         c = conn.cursor()
-        student_list = c.execute("SELECT * FROM login WHERE name =? and type='student'",t)
+        student_list = c.execute("SELECT * FROM login WHERE name like ? and type='student'",t)
         student_list = c.fetchall()
-        prof_list=c.execute("SELECT * FROM login WHERE name =? and type='professor'",t)
+        prof_list=c.execute("SELECT * FROM login WHERE name like ? and type='professor'",t)
         prof_list=c.fetchall()
-        lab_list = c.execute("SELECT lab FROM login WHERE lab =?",t)
+        lab_list = c.execute("SELECT DISTINCT  lab FROM login WHERE lab like ?",t)
         lab_list=c.fetchall()
-        i_list = c.execute("SELECT * FROM post WHERE researcharea=? ",t)
+        i_list = c.execute("SELECT * FROM post WHERE researcharea like ? ",t)
         i_list = c.fetchall()
         return render_template('search.html',id=session['userID'],prof_list=prof_list,student_list=student_list,i_list=i_list,lab_list=lab_list)
         conn.close()    

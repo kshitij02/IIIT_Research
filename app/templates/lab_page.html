@@ -13,6 +13,10 @@
           <br>
          <b><span style="color:#E040FB;">{{lab[1]}}</span></b></h4>
          <hr>
+         <h3 style="text-align: center;">ABOUT</h3></h1>
+    <p style="margin-left: 10px; margin-right: 10px;">
+      {{lab[2]}}
+    </p>
         </div>
       </div>
       <br>
@@ -21,6 +25,7 @@
         <div class="w3-container">
           <span>{{lab[0]}}</span>
         </div>
+
       </div>
       <br>
       <br>
@@ -28,10 +33,26 @@
     
     <!-- Middle Column -->
     <div class="w3-col m7">
-    <h1 style="text-align: center;">ABOUT</h2></h1>
-    <p style="margin-left: 10px; margin-right: 10px;">
-      {{lab[2]}}
-    </p>
+
+    <div class="container">
+      {% for post in lab_posts %}
+  <div style="color: #777;background-color:white;text-align:center;padding:50px 80px;text-align: justify;border-radius:50px;margin:15px;box-shadow: 0px 11px 35px 2px rgba(0, 0, 0, 0.14); ">
+ <h3 style="text-align:center;">Research Area:{{post[1]}}</h3>
+  <p class="text-center">
+     Lab: <a href="/lab_info/{{post[2]}}">{{post[2]}}</a><br>
+    Professor: <a href="/about/{{post[4]}}">{{post[4]}}</a><br>
+  </p>
+  <p class="text-center"><b>About</b><br>{{post[7]}}</p>
+  {% if post[9]=="yes" %}
+  <p class="text-center"><a href="/show_file/{{post[0]}}.pdf"><img class="avatar" src="https://www.zamzar.com/images/filetypes/pdf.png" class="user_image"></a> <a>Download Research Paper</a></p>
+  {% endif %}
+  <p class="text-center">
+          <span class="glyphicon glyphicon-heart" style="color:red;" class="heart"></span> {{post[6]}} votes</a>
+      </p>
+</div><br>    
+{% endfor %}
+    </div>
+
     <!-- End Middle Column -->
      </div>
     
