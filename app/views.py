@@ -261,6 +261,7 @@ def professor():
 def login():
 	if session['user_logged_in']==True:
 		return redirect(url_for('index',id=session['userID']))
+	# flash("invalid credentials")
 	return render_template('login.html')
 
 @app.route('/registration')

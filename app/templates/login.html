@@ -14,12 +14,11 @@
   <div class="main" style="min-height:450px;">
     <p class="sign" align="center">Sign in</p>
     <form class="form1" action="/loginNext" method="POST">
-      <input class="un " type="text" align="center" placeholder="Username" name="id">
-      <input class="pass" type="password" align="center" placeholder="Password" name="password"> 
+      <input class="un " type="email" align="center" placeholder="Username" name="id" required>
+      <input class="pass" type="password" align="center" placeholder="Password" name="password" required> 
       <input type="submit" class="submit" align="center" value="Sign in" ></input>
       <br>
       </form>
-      
          <a class="submit" align="center" style="margin-bottom:20px;" ="" href="{{ url_for('registration') }}">Sign up</a>
                 
     </div>

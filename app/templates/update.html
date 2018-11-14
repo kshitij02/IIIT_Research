@@ -12,7 +12,7 @@
 
 		<input class='updt_fields' onfocus="inc_w(this);" onblur="dcr_w(this);"style="width: 200px;" type="password" name="c_pass" placeholder="Confirm Password"><br>
 
-		<input class='updt_fields' onfocus="inc_w(this);" onblur="dcr_w(this);"style="width: 200px;" type="text" name="native" value="{{li[4]}}" placeholder="Where Are You From?"><br>
+		<input class='updt_fields' onfocus="inc_w(this);" onblur="dcr_w(this);"style="width: 210px;" type="text" name="native" value="{% if li[4]!=None %}{{li[4]}}{% endif %}" placeholder="Where Are You From?"><br>
 
 		<input class='updt_fields' style="width: 200px; color: grey; text-align: center;"type="date" value="{{li[5]}}" name="dob"><br>
 
