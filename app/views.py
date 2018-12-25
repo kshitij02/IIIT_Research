@@ -1,14 +1,3 @@
- 
-# app = Flask(__name__)
-
-# @app.route('/main')
-# def index():
-# 	user = {'nickname': 'Mitesh'}
-# 	return render_template('stud.html',title='Student',user=user)
-
-# session[userlogedin]=False
-# session = Session()
-# session[user_logged_in]=False
 from flask import render_template
 from flask import url_for,redirect,session
 from flask import request,flash
@@ -23,15 +12,7 @@ app.secret_key = "Ramukaka"
  
 app.config['UPLOAD_FOLDER']="research_paper"
 
- 
-# path="~/research_paper/"
 
-# @app.route('/upload')
-# def upload():
-#    return render_template('upload.html')
-
-   
-# @app.route('/uploader/<post_id>', methods = ['GET', 'POST'])
 def upload_file(post_id):
 	if request.method == 'POST':
 		try:
@@ -44,13 +25,13 @@ def upload_file(post_id):
 def file(filename):
     try:
     	return flask.send_file(
-    	'research_paper/'+filename,  # file path or file-like object
+    	'research_paper/'+filename,  
     	'application/pdf',
     	as_attachment=True,
     	attachment_filename=filename
     	)
     except:
-    	flash("No File inserted!!!")
+    	# flash("No File inserted!!!")
     	return redirect(url_for('index',id=session['userID']))
 
 @app.route('/show_file/<filename>')
@@ -275,7 +256,7 @@ def professor():
 @app.route('/')	
 @app.route('/login')
 def login():
-	if session['user_logged_in']==True:
+	if 'user_logged_in' in session and session['user_logged_in']==True:
 		return redirect(url_for('index',id=session['userID']))
 	# flash("invalid credentials")
 	return render_template('login.html')
@@ -529,8 +510,8 @@ def registrationNext():
 		if insert_login(id,name,password,type,lab)==True:
 			return redirect(url_for('login'))
 		else:	
-			flash("User id already Exits!!")
-		return redirect(url_for('registration'))
+			# flash("User id already Exits!!")
+			return redirect(url_for('registration'))
 
 def type_find():
 	BASE_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -556,7 +537,7 @@ def loginNext():
             session['type']=type_find()
             return redirect(url_for('index',id=session['userID']))
         else :
-            flash( "Invaild credentials!")
+            # flash( "Invaild credentials!")
             return redirect(url_for('login'))			
 
 @app.route('/logout')
